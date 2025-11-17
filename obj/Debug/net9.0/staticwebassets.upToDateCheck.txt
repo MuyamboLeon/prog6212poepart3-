@@ -1,0 +1,189 @@
+wwwroot\css\site.css
+wwwroot\favicon.ico
+wwwroot\js\site.js
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap.css
+wwwroot\lib\bootstrap\dist\css\bootstrap.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css
+wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.js.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.min.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map
+wwwroot\lib\bootstrap\LICENSE
+wwwroot\lib\jquery-validation-unobtrusive\dist\jquery.validate.unobtrusive.js
+wwwroot\lib\jquery-validation-unobtrusive\dist\jquery.validate.unobtrusive.min.js
+wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt
+wwwroot\lib\jquery-validation\dist\additional-methods.js
+wwwroot\lib\jquery-validation\dist\additional-methods.min.js
+wwwroot\lib\jquery-validation\dist\jquery.validate.js
+wwwroot\lib\jquery-validation\dist\jquery.validate.min.js
+wwwroot\lib\jquery-validation\LICENSE.md
+wwwroot\lib\jquery\dist\jquery.js
+wwwroot\lib\jquery\dist\jquery.min.js
+wwwroot\lib\jquery\dist\jquery.min.map
+wwwroot\lib\jquery\dist\jquery.slim.js
+wwwroot\lib\jquery\dist\jquery.slim.min.js
+wwwroot\lib\jquery\dist\jquery.slim.min.map
+wwwroot\lib\jquery\LICENSE.txt
+wwwroot\uploads\01ac1769-fa02-4476-9394-6d108fa39dd2_claim 1.pdf
+wwwroot\uploads\05130ba9-2f43-4f6e-b83d-538f0f3d1c09_claim 1.pdf
+wwwroot\uploads\0a228d61-6d63-4850-baf8-d1e6549159d3_claim 1.pdf
+wwwroot\uploads\0f5736ac-f7f1-4671-98e4-6a38a459d49e_claim 1.pdf
+wwwroot\uploads\15f5cc96-5344-41e7-a95e-c0f7c1d35b48_claim 1.pdf
+wwwroot\uploads\1ee604f5-a99b-4f46-9ce2-43d97e5f1902_claim 1.pdf
+wwwroot\uploads\2609bf25-d8c1-4a79-aa83-c02936734c50_claim 1.pdf
+wwwroot\uploads\2615b813-88c9-4b9c-985a-ecf0f5e601d2_claim 1.pdf
+wwwroot\uploads\36492d80-9c16-47cd-99c8-f14f71dff8bf_claim 1.pdf
+wwwroot\uploads\3c23fbb5-3e7c-4b07-83e4-6b3d888c19af_claim 1.pdf
+wwwroot\uploads\4035663a-1138-45b4-9cb7-9de5847e9069_claim 1.pdf
+wwwroot\uploads\426d2fac-dde5-4cdc-938d-4492ac2bccef_claim 1.pdf
+wwwroot\uploads\43cc44e5-64fe-4d3e-a4a0-dfdf183aad0b_claim 1.pdf
+wwwroot\uploads\502c2661-4189-4380-a250-89482851d28e_claim 1.pdf
+wwwroot\uploads\516e4c34-befc-4f0a-9e2c-8531f2fb9096_claim 1.pdf
+wwwroot\uploads\5423e8b8-e0df-4051-9c00-9d03e5c08380_claim 1.pdf
+wwwroot\uploads\605a4a19-da65-451a-904b-8a7908f58be7_claim 1.pdf
+wwwroot\uploads\6978ccf6-6e81-4964-bbf7-12b1cf7920e9_claim 1.pdf
+wwwroot\uploads\7002367b-6820-4fc5-9cf6-03fff49efe68_claim 1.pdf
+wwwroot\uploads\753e0a2f-870c-411a-8fce-3c6c4726dc63_claim 1.pdf
+wwwroot\uploads\78071e06-357e-483a-8004-71bd973c8603_claim 1.pdf
+wwwroot\uploads\78780376-6337-493b-8ba0-5db4ff720b1a_claim 1.pdf
+wwwroot\uploads\7c095e5d-3e30-4828-a46a-0345544634bd_claim 1.pdf
+wwwroot\uploads\7c701c96-de70-4b1a-9ddf-0428b0aedd3f_claim 1.pdf
+wwwroot\uploads\7cd7454d-9e2b-49c3-8d2a-3b2cd99cae50_claim 1.pdf
+wwwroot\uploads\7cf67c71-f93d-4bee-89d4-32fbdf51e3c4_claim 1.pdf
+wwwroot\uploads\816d79ce-5d1b-423c-8824-3c9f11f9ad3a_claim 1.pdf
+wwwroot\uploads\83189005-1a8c-4d31-997b-eec55d07eecb_claim 1.pdf
+wwwroot\uploads\83b49dd1-f3a5-42a2-b9a2-a6cf7f59b162_claim 1.pdf
+wwwroot\uploads\8d67d9fe-9f6e-4d1e-a76f-93f2dd13c815_claim 1.pdf
+wwwroot\uploads\923b043f-e63d-43cb-80e8-0ec6e9370df4_claim 1.pdf
+wwwroot\uploads\972e002e-9d8b-4333-abc1-73b1af28001c_claim 1.pdf
+wwwroot\uploads\97314338-a6d8-4990-800b-67e86101a1c5_claim 1.pdf
+wwwroot\uploads\9758232c-67c1-4a38-9381-ea10ad11dc95_claim 1.pdf
+wwwroot\uploads\9932b2ac-1192-45d4-a1fc-aa292d55e9aa_claim 1.pdf
+wwwroot\uploads\9bb3b4c6-985b-4823-86fd-0b7fddfa09a8_claim 1.pdf
+wwwroot\uploads\a0e0dc69-a4a9-4b60-bedf-b04597b35cc7_claim 1.pdf
+wwwroot\uploads\a2b10602-989f-49bd-916b-966f13b2d62b_claim 1.pdf
+wwwroot\uploads\a2efe3cb-0a19-43db-ad95-4756a4135f62_claim 1.pdf
+wwwroot\uploads\a3ec67f6-02c0-4e8b-915e-0e744a818bc5_claim 1.pdf
+wwwroot\uploads\a769f7c9-7cc7-4787-a94a-f48bd9b7ba65_claim 1.pdf
+wwwroot\uploads\a9d5762f-428f-4d91-9850-907567985ac7_claim 1.pdf
+wwwroot\uploads\a9f9eea2-a35a-46ea-a3f1-399cf4151bc5_claim 1.pdf
+wwwroot\uploads\ac7c5633-5677-4d1e-81fb-be12ff182e71_claim 1.pdf
+wwwroot\uploads\acf42e78-2b73-449c-b674-06b8dda9cc05_claim 1.pdf
+wwwroot\uploads\adae4d0b-f105-44f5-9647-87dbb23ed2f3_claim 1.pdf
+wwwroot\uploads\b15fcd1d-9776-44ef-b85e-22a7e25a2f8a_claim 1.pdf
+wwwroot\uploads\b61b77ff-0613-419f-9dad-9ba5dae82e44_claim 1.pdf
+wwwroot\uploads\b70f631e-31fa-469a-b984-ed54b8efc501_claim 1.pdf
+wwwroot\uploads\b77d6232-2fb7-4416-a4cb-66f7af4ee95a_claim 1.pdf
+wwwroot\uploads\be97716c-f1bf-46b5-b2ed-d8333f99d30f_claim 1.pdf
+wwwroot\uploads\c34bad36-b257-4db2-942c-dabbbdd2ac65_claim 1.pdf
+wwwroot\uploads\c89bae79-1de5-481b-9934-76393fe59c32_claim 1.pdf
+wwwroot\uploads\cd4ba2a7-dc8a-4100-9ae3-57bc5d664556_claim 1.pdf
+wwwroot\uploads\d65359ae-6f69-4b05-a7e4-72c55113f65e_claim 1.pdf
+wwwroot\uploads\e37154a8-f9a5-47fa-83d7-cea6872c6ff0_claim 1.pdf
+wwwroot\uploads\e74be842-ca6e-4c06-99ff-1c7a9db06f1f_claim 1.pdf
+wwwroot\uploads\ee7ed77a-3d85-411c-8d51-8bb4cf72b486_claim 1.pdf
+wwwroot\uploads\ef48af2c-b32d-48a3-9914-c701be3db62a_claim 1.pdf
+wwwroot\uploads\f09e0c72-7af7-438a-b5a1-5fbb3ea14c54_claim 1.pdf
+wwwroot\uploads\f5c8ade5-5cfd-4e64-9b61-9bc2a54fd056_claim 1.pdf
+wwwroot\uploads\f6e7e2d1-98be-44c5-9cc4-f32f2cb4bb68_claim 1.pdf
+wwwroot\uploads\f8f57ff1-2972-4fa9-803d-b2505313ae22_claim 1.pdf
+wwwroot\uploads\ffd4eee1-91d3-40fa-9179-aba15b6afe24_claim 1.pdf
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\css\site.css
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\favicon.ico
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\jquery\LICENSE.txt
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\js\site.js
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css.map
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css.map
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css.map
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css.map
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css.map
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css.map
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css.map
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css.map
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css.map
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css.map
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\bootstrap\dist\css\bootstrap.css
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\bootstrap\dist\css\bootstrap.css.map
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\bootstrap\dist\css\bootstrap.min.css
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css.map
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css.map
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js.map
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js.map
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\bootstrap\dist\js\bootstrap.js
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\bootstrap\dist\js\bootstrap.js.map
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\bootstrap\dist\js\bootstrap.min.js
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\jquery-validation-unobtrusive\dist\jquery.validate.unobtrusive.js
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\jquery-validation-unobtrusive\dist\jquery.validate.unobtrusive.min.js
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\jquery-validation\dist\additional-methods.js
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\jquery-validation\dist\additional-methods.min.js
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\jquery-validation\dist\jquery.validate.js
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\jquery-validation\dist\jquery.validate.min.js
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\jquery-validation\LICENSE.md
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\jquery\dist\jquery.js
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\jquery\dist\jquery.min.js
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\jquery\dist\jquery.min.map
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\jquery\dist\jquery.slim.js
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\jquery\dist\jquery.slim.min.js
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\wwwroot\lib\jquery\dist\jquery.slim.min.map

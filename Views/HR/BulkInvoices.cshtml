@@ -1,0 +1,334 @@
+﻿@model List<The_CMCS.Models.Claim>
+@{
+    ViewData["Title"] = "Bulk Invoices";
+    var approvedClaims = Model ?? new List<The_CMCS.Models.Claim>();
+}
+
+<style>
+    .page-header {
+        background: linear-gradient(135deg, #9b59b6, #8e44ad);
+        color: white;
+        padding: 30px;
+        border-radius: 15px;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .title-section h1 {
+        margin: 0;
+        font-size: 2.5rem;
+        font-weight: 700;
+    }
+
+    .title-section p {
+        margin: 5px 0 0 0;
+        opacity: 0.9;
+        font-size: 1.1rem;
+    }
+
+    .bulk-invoices-container {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    }
+
+    .bulk-actions {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        border-left: 4px solid #9b59b6;
+    }
+
+    .selection-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #3498db, #2980b9);
+        color: white;
+    }
+
+    .btn-success {
+        background: linear-gradient(135deg, #27ae60, #2ecc71);
+        color: white;
+    }
+
+    .btn-danger {
+        background: linear-gradient(135deg, #e74c3c, #c0392b);
+        color: white;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .claims-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .claims-table th {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 15px 12px;
+            text-align: left;
+            font-weight: 600;
+            color: #495057;
+            border-bottom: 3px solid #dee2e6;
+        }
+
+        .claims-table td {
+            padding: 15px 12px;
+            border-bottom: 1px solid #e9ecef;
+            vertical-align: middle;
+        }
+
+    .claim-ref {
+        display: flex;
+        align-items: center;
+        font-weight: 500;
+        color: #2c3e50;
+    }
+
+    .amount {
+        font-weight: 700;
+        color: #27ae60;
+    }
+
+    .checkbox-cell {
+        width: 50px;
+        text-align: center;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #6c757d;
+    }
+
+    .empty-icon {
+        font-size: 64px;
+        color: #bdc3c7;
+        margin-bottom: 20px;
+    }
+
+    @@media (max-width: 768px) {
+        .header-content {
+            flex-direction: column;
+            text-align: center;
+            gap: 20px;
+        }
+
+        .selection-info {
+            flex-direction: column;
+            gap: 15px;
+            text-align: center;
+        }
+    }
+</style>
+
+<div class="page-header">
+    <div class="header-content">
+        <div class="title-section">
+            <h1><i class="fas fa-download me-3"></i>Bulk Invoices</h1>
+            <p class="text-muted">Download multiple invoices at once</p>
+        </div>
+        <div class="header-actions">
+            <a asp-controller="HR" asp-action="Dashboard" class="btn btn-outline-light">
+                <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+            </a>
+            <a asp-controller="HR" asp-action="Reports" class="btn btn-light">
+                <i class="fas fa-chart-bar me-2"></i>Reports
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="bulk-invoices-container">
+    @if (approvedClaims.Any())
+    {
+        <div class="bulk-actions">
+            <div class="selection-info">
+                <div>
+                    <strong id="selectedCount">0</strong> claims selected
+                    <span id="totalAmount" class="text-muted ms-3">Total: R0</span>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-danger me-2" onclick="clearSelection()">
+                        <i class="fas fa-times me-2"></i>Clear All
+                    </button>
+                    <button type="button" class="btn btn-primary me-2" onclick="selectAll()">
+                        <i class="fas fa-check-square me-2"></i>Select All
+                    </button>
+                    <form method="post" asp-action="DownloadBulkInvoices" asp-controller="HR" id="bulkDownloadForm" style="display: inline;">
+                        <button type="submit" class="btn btn-success" id="downloadBulkBtn" disabled>
+                            <i class="fas fa-download me-2"></i>Download Selected (@approvedClaims.Count)
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="claims-table">
+                <thead>
+                    <tr>
+                        <th class="checkbox-cell">
+                            <input type="checkbox" id="selectAllCheckbox" onchange="toggleAll(this)">
+                        </th>
+                        <th>Claim Reference</th>
+                        <th>Lecturer</th>
+                        <th>Department</th>
+                        <th>Month</th>
+                        <th>Hours</th>
+                        <th>Amount</th>
+                        <th>Approved Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var claim in approvedClaims.OrderByDescending(c => c.ReviewedDate))
+                    {
+                        <tr>
+                            <td class="checkbox-cell">
+                                <input type="checkbox" name="claimIds" value="@claim.Id" class="claim-checkbox" onchange="updateSelection()">
+                            </td>
+                            <td>
+                                <div class="claim-ref">
+                                    <i class="fas fa-file-invoice-dollar me-2"></i>
+                                    @claim.Id
+                                </div>
+                            </td>
+                            <td>@claim.LecturerName</td>
+                            <td>@claim.Department</td>
+                            <td>@claim.Month</td>
+                            <td>@claim.HoursWorked hrs</td>
+                            <td>
+                                <span class="amount">R@(claim.TotalAmount.ToString("N0"))</span>
+                            </td>
+                            <td>
+                                <small class="text-muted">
+                                    @claim.ReviewedDate?.ToString("MMM dd, yyyy")
+                                </small>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="empty-state">
+            <div class="empty-icon">
+                <i class="fas fa-file-invoice"></i>
+            </div>
+            <h4>No Approved Claims</h4>
+            <p class="text-muted">There are no approved claims available for bulk invoice download.</p>
+            <a asp-controller="HR" asp-action="Reports" class="btn btn-primary mt-3">
+                <i class="fas fa-arrow-left me-2"></i>Back to Reports
+            </a>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        function updateSelection() {
+            const checkboxes = document.querySelectorAll('.claim-checkbox:checked');
+            const selectedCount = checkboxes.length;
+            const selectedCountElement = document.getElementById('selectedCount');
+            const totalAmountElement = document.getElementById('totalAmount');
+            const downloadBtn = document.getElementById('downloadBulkBtn');
+
+            selectedCountElement.textContent = selectedCount;
+            downloadBtn.disabled = selectedCount === 0;
+            downloadBtn.innerHTML = `<i class="fas fa-download me-2"></i>Download Selected (${selectedCount})`;
+
+            // Update total amount
+            let totalAmount = 0;
+            checkboxes.forEach(checkbox => {
+                const row = checkbox.closest('tr');
+                const amountText = row.querySelector('.amount').textContent;
+                const amount = parseFloat(amountText.replace('R', '').replace(',', ''));
+                totalAmount += amount;
+            });
+
+            totalAmountElement.textContent = `Total: R${totalAmount.toLocaleString()}`;
+        }
+
+        function toggleAll(selectAllCheckbox) {
+            const checkboxes = document.querySelectorAll('.claim-checkbox');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = selectAllCheckbox.checked;
+            });
+            updateSelection();
+        }
+
+        function selectAll() {
+            const checkboxes = document.querySelectorAll('.claim-checkbox');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = true;
+            });
+            document.getElementById('selectAllCheckbox').checked = true;
+            updateSelection();
+        }
+
+        function clearSelection() {
+            const checkboxes = document.querySelectorAll('.claim-checkbox');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            document.getElementById('selectAllCheckbox').checked = false;
+            updateSelection();
+        }
+
+        // Handle bulk download form submission
+        document.getElementById('bulkDownloadForm').addEventListener('submit', function(e) {
+            const checkboxes = document.querySelectorAll('.claim-checkbox:checked');
+            if (checkboxes.length === 0) {
+                e.preventDefault();
+                alert('Please select at least one claim to download.');
+                return;
+            }
+
+            // Add selected claim IDs to form
+            checkboxes.forEach(checkbox => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'claimIds';
+                input.value = checkbox.value;
+                this.appendChild(input);
+            });
+
+            // Show loading state
+            const button = this.querySelector('button[type="submit"]');
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Preparing Download...';
+            button.disabled = true;
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Bulk Invoices page loaded successfully');
+        });
+    </script>
+}

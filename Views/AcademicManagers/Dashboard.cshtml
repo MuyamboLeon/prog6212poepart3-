@@ -1,0 +1,220 @@
+﻿@{
+    ViewData["Title"] = "Academic Manager Dashboard";
+    var allClaims = ViewBag.AllClaims as List<The_CMCS.Models.Claim> ?? new List<The_CMCS.Models.Claim>();
+    var departmentOverview = ViewBag.DepartmentOverview as Dictionary<string, decimal> ?? new Dictionary<string, decimal>();
+    var pendingCount = allClaims.Count(c => c.Status == "Pending");
+    var approvedCount = allClaims.Count(c => c.Status == "Approved");
+    var totalValue = allClaims.Sum(c => c.TotalAmount);
+    var approvedPercentage = allClaims.Count > 0 ? (approvedCount / (double)allClaims.Count) * 100 : 0;
+}
+
+<div class="dashboard-header">
+    <div class="header-content">
+        <div class="welcome-section">
+            <h1>Academic Manager Dashboard</h1>
+            <p class="text-muted">Overview of all claims across departments</p>
+        </div>
+        <span class="badge bg-warning role-badge">Academic Manager</span>
+    </div>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card total">
+        <div class="stat-icon">
+            <i class="fas fa-file-invoice-dollar"></i>
+        </div>
+        <div class="stat-content">
+            <h3>R@(totalValue.ToString("N0"))</h3>
+            <p>TOTAL CLAIMS VALUE</p>
+            <div class="stat-trend">
+                <i class="fas fa-chart-line text-success me-1"></i>
+                <span class="text-success">All Departments</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="stat-card percentage">
+        <div class="stat-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="stat-content">
+            <h3>@(approvedPercentage.ToString("F1"))%</h3>
+            <p>APPROVED CLAIMS</p>
+            <div class="stat-progress">
+                <div class="progress-bar" style="width: @approvedPercentage%"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="stat-card review">
+        <div class="stat-icon">
+            <i class="fas fa-exclamation-circle"></i>
+        </div>
+        <div class="stat-content">
+            <h3>@pendingCount</h3>
+            <p>PENDING APPROVAL</p>
+            <div class="stat-progress">
+                <div class="progress-bar" style="width: @(allClaims.Count > 0 ? (pendingCount * 100 / allClaims.Count) : 0)%"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="stat-card lecturers">
+        <div class="stat-icon">
+            <i class="fas fa-users"></i>
+        </div>
+        <div class="stat-content">
+            <h3>@(allClaims.Select(c => c.LecturerId).Distinct().Count())</h3>
+            <p>ACTIVE LECTURERS</p>
+            <div class="stat-trend">
+                <i class="fas fa-user-check text-info me-1"></i>
+                <span class="text-info">Teaching Staff</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="dashboard-section">
+            <div class="section-header">
+                <h3><i class="fas fa-building me-2"></i>Department Overview</h3>
+            </div>
+            <div class="list-group list-group-flush">
+                @foreach (var dept in departmentOverview)
+                {
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                        <span class="department-tag">@dept.Key</span>
+                        <span class="amount">R@(dept.Value.ToString("N0"))</span>
+                    </div>
+                }
+                @if (!departmentOverview.Any())
+                {
+                    <div class="empty-state">
+                        <i class="fas fa-building empty-icon"></i>
+                        <h4>No Department Data</h4>
+                        <p>No claims data available for departments</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="dashboard-section">
+            <div class="section-header">
+                <h3><i class="fas fa-bell me-2"></i>Recent Activities</h3>
+            </div>
+            <div id="recent-activities">
+                @foreach (var claim in allClaims.OrderByDescending(c => c.SubmittedDate).Take(5))
+                {
+                    <div class="activity-item">
+                        <div class="activity-icon @(claim.Status == "Approved" ? "success" : claim.Status == "Rejected" ? "danger" : "primary")">
+                            <i class="fas @(claim.Status == "Approved" ? "fa-check" : claim.Status == "Rejected" ? "fa-times" : "fa-clock")"></i>
+                        </div>
+                        <div class="activity-content">
+                            <h6>
+                                @if (claim.Status == "Approved")
+                                {
+                                    <text>Claim @claim.Id approved</text>
+                                }
+                                else if (claim.Status == "Rejected")
+                                {
+                                    <text>Claim @claim.Id rejected</text>
+                                }
+                                else
+                                {
+                                    <text>New claim from @claim.LecturerName</text>
+                                }
+                            </h6>
+                            <p>@((DateTime.Now - claim.SubmittedDate).Days) days ago • @claim.Department</p>
+                        </div>
+                    </div>
+                }
+                @if (!allClaims.Any())
+                {
+                    <div class="empty-state">
+                        <i class="fas fa-bell empty-icon"></i>
+                        <h4>No Recent Activity</h4>
+                        <p>No recent claims activity</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="dashboard-section">
+    <div class="section-header">
+        <h3><i class="fas fa-list me-2"></i>All Claims</h3>
+        <div class="header-actions">
+            <a asp-action="ReviewClaims" asp-controller="AcademicManagers" class="btn btn-primary">
+                <i class="fas fa-tasks me-1"></i> Review Pending Claims
+            </a>
+            <a asp-action="Reports" asp-controller="AcademicManagers" class="btn btn-outline-primary">
+                <i class="fas fa-download me-1"></i> View Reports
+            </a>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="dashboard-table">
+            <thead>
+                <tr>
+                    <th>Lecturer</th>
+                    <th>Department</th>
+                    <th>Reference</th>
+                    <th>Month</th>
+                    <th>Hours</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (allClaims.Any())
+                {
+                    foreach (var claim in allClaims)
+                    {
+                        <tr>
+                            <td>@claim.LecturerName</td>
+                            <td><span class="department-tag">@claim.Department</span></td>
+                            <td>
+                                <div class="claim-ref">
+                                    <i class="fas fa-file-invoice-dollar"></i>
+                                    @claim.Id
+                                </div>
+                            </td>
+                            <td>@claim.Month</td>
+                            <td><span class="hours-badge">@claim.HoursWorked hrs</span></td>
+                            <td><span class="amount">R@(claim.TotalAmount.ToString("N0"))</span></td>
+                            <td>
+                                <span class="status-badge status-@claim.Status.ToLower()">
+                                    <i class="fas @(claim.Status == "Pending" ? "fa-clock" : claim.Status == "Approved" ? "fa-check" : "fa-times")"></i>
+                                    @claim.Status.ToUpper()
+                                </span>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a asp-controller="AcademicManagers" asp-action="ClaimDetails" asp-route-id="@claim.Id" class="btn-action view" title="View Details">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="8">
+                            <div class="empty-state">
+                                <i class="fas fa-file-invoice empty-icon"></i>
+                                <h4>No Claims Yet</h4>
+                                <p>There are no claims in the system yet.</p>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

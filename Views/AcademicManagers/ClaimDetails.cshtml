@@ -1,0 +1,293 @@
+﻿@model The_CMCS.Models.Claim
+@{
+    ViewData["Title"] = "Claim Details";
+}
+
+<div class="dashboard-header">
+    <div class="header-content">
+        <div class="welcome-section">
+            <h1>Claim Details</h1>
+            <p class="text-muted">Review claim information and documents</p>
+        </div>
+        <a asp-action="ReviewClaims" asp-controller="AcademicManagers" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-1"></i> Back to Review
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="dashboard-section">
+            <div class="section-header">
+                <h3><i class="fas fa-info-circle me-2"></i>Claim Information</h3>
+                <span class="status-badge status-@Model.Status.ToLower()">
+                    <i class="fas @(Model.Status == "Pending" ? "fa-clock" : Model.Status == "Approved" ? "fa-check" : "fa-times")"></i>
+                    @Model.Status.ToUpper()
+                </span>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Reference Number</label>
+                        <p class="claim-ref">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                            @Model.Id
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Month</label>
+                        <p>@Model.Month</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Lecturer</label>
+                        <p>@Model.LecturerName</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Department</label>
+                        <p><span class="department-tag">@Model.Department</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Hours Worked</label>
+                        <p><span class="hours-badge">@Model.HoursWorked hrs</span></p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Hourly Rate</label>
+                        <p>R@(Model.HourlyRate.ToString("N2"))</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Total Amount</label>
+                        <p class="amount">R@(Model.TotalAmount.ToString("N0"))</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Submitted Date</label>
+                        <p>@Model.SubmittedDate.ToString("MMM dd, yyyy")</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Description</label>
+                <p>@(string.IsNullOrEmpty(Model.Description) ? "No description provided" : Model.Description)</p>
+            </div>
+
+            @if (Model.Status != "Pending")
+            {
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">@(Model.Status == "Approved" ? "Approved" : "Rejected") By</label>
+                            <p>@Model.ReviewedBy</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">@(Model.Status == "Approved" ? "Approved" : "Rejected") Date</label>
+                            <p>@(Model.ReviewedDate?.ToString("MMM dd, yyyy") ?? "N/A")</p>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            @if (Model.Status == "Rejected" && !string.IsNullOrEmpty(Model.RejectionReason))
+            {
+                <div class="mb-3">
+                    <label class="form-label fw-bold text-danger">Rejection Reason</label>
+                    <p class="text-danger">@Model.RejectionReason</p>
+                </div>
+            }
+        </div>
+
+        <!-- Approval Workflow Status -->
+        <div class="dashboard-section">
+            <div class="section-header">
+                <h3><i class="fas fa-tasks me-2"></i>Approval Workflow</h3>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="workflow-step @(Model.CoordinatorApproved ? "completed" : Model.Status == "Rejected" ? "rejected" : "active")">
+                        <div class="step-icon">
+                            <i class="fas @(Model.CoordinatorApproved ? "fa-check" : Model.Status == "Rejected" ? "fa-times" : "fa-user-check")"></i>
+                        </div>
+                        <div class="step-content">
+                            <h6>Coordinator Review</h6>
+                            @if (Model.CoordinatorApproved)
+                            {
+                                <p class="text-success mb-1">Approved by @Model.CoordinatorApprovedBy</p>
+                                <small class="text-muted">@Model.CoordinatorApprovedDate?.ToString("MMM dd, yyyy hh:mm tt")</small>
+                            }
+                            else if (Model.Status == "Rejected" && !string.IsNullOrEmpty(Model.CoordinatorApprovedBy))
+                            {
+                                <p class="text-danger mb-1">Rejected by @Model.CoordinatorApprovedBy</p>
+                                <small class="text-muted">@Model.CoordinatorApprovedDate?.ToString("MMM dd, yyyy hh:mm tt")</small>
+                            }
+                            else
+                            {
+                                <p class="text-warning mb-1">Pending Coordinator Review</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="workflow-step @(Model.ManagerApproved ? "completed" : Model.Status == "Rejected" && string.IsNullOrEmpty(Model.CoordinatorApprovedBy) ? "rejected" : Model.CoordinatorApproved ? "active" : "pending")">
+                        <div class="step-icon">
+                            <i class="fas @(Model.ManagerApproved ? "fa-check-double" : Model.Status == "Rejected" && string.IsNullOrEmpty(Model.CoordinatorApprovedBy) ? "fa-times" : Model.CoordinatorApproved ? "fa-user-tie" : "fa-clock")"></i>
+                        </div>
+                        <div class="step-content">
+                            <h6>Manager Review</h6>
+                            @if (Model.ManagerApproved)
+                            {
+                                <p class="text-success mb-1">Approved by @Model.ManagerApprovedBy</p>
+                                <small class="text-muted">@Model.ManagerApprovedDate?.ToString("MMM dd, yyyy hh:mm tt")</small>
+                            }
+                            else if (Model.Status == "Rejected" && string.IsNullOrEmpty(Model.CoordinatorApprovedBy))
+                            {
+                                <p class="text-danger mb-1">Rejected by @Model.ManagerApprovedBy</p>
+                                <small class="text-muted">@Model.ManagerApprovedDate?.ToString("MMM dd, yyyy hh:mm tt")</small>
+                            }
+                            else if (Model.CoordinatorApproved)
+                            {
+                                <p class="text-warning mb-1">Pending Manager Review</p>
+                            }
+                            else
+                            {
+                                <p class="text-muted mb-1">Waiting for Coordinator</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="dashboard-section">
+            <div class="section-header">
+                <h3><i class="fas fa-paperclip me-2"></i>Documents</h3>
+            </div>
+
+            @if (Model.Documents != null && Model.Documents.Any())
+            {
+                <div class="list-group">
+                    @foreach (var document in Model.Documents)
+                    {
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <i class="fas fa-file-pdf text-danger me-2"></i>
+                                <span>@document.FileName</span>
+                            </div>
+                            <a href="@Url.Action("DownloadDocument", "AcademicManagers", new { id = document.Id })"
+                               class="btn-action view" title="Download Document">
+                                <i class="fas fa-download"></i>
+                            </a>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="empty-state" style="padding: 30px 20px;">
+                    <i class="fas fa-file empty-icon" style="font-size: 48px;"></i>
+                    <h5>No Documents</h5>
+                    <p class="text-muted">No documents attached to this claim.</p>
+                </div>
+            }
+        </div>
+
+        @if (Model.Status == "Pending")
+        {
+            <div class="dashboard-section">
+                <div class="section-header">
+                    <h3><i class="fas fa-cogs me-2"></i>Actions</h3>
+                </div>
+                <div class="d-grid gap-2">
+                    <form method="post" asp-action="ApproveClaim" asp-controller="AcademicManagers"
+                          onsubmit="return confirm('Are you sure you want to approve this claim?');">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <button type="submit" class="btn btn-success w-100 mb-2">
+                            <i class="fas fa-check me-1"></i> Approve Claim
+                        </button>
+                    </form>
+
+                    <!-- Add a hidden anti-forgery token for JavaScript to use -->
+                    @Html.AntiForgeryToken()
+
+                    <button type="button" class="btn btn-danger w-100 reject-btn" data-claim-id="@Model.Id">
+                        <i class="fas fa-times me-1"></i> Reject Claim
+                    </button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const rejectBtn = document.querySelector('.reject-btn');
+            if (rejectBtn) {
+                rejectBtn.addEventListener('click', function() {
+                    const claimId = this.getAttribute('data-claim-id');
+                    const reason = prompt(`Please provide a reason for rejecting claim ${claimId}:`);
+
+                    if (reason && reason.trim().length > 0) {
+                        // Get the anti-forgery token
+                        const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+
+                        const form = document.createElement('form');
+                        form.method = 'post';
+                        form.action = '@Url.Action("RejectClaim", "AcademicManagers")';
+
+                        // Add anti-forgery token
+                        const tokenInput = document.createElement('input');
+                        tokenInput.type = 'hidden';
+                        tokenInput.name = '__RequestVerificationToken';
+                        tokenInput.value = token;
+
+                        const claimIdInput = document.createElement('input');
+                        claimIdInput.type = 'hidden';
+                        claimIdInput.name = 'id';
+                        claimIdInput.value = claimId;
+
+                        const reasonInput = document.createElement('input');
+                        reasonInput.type = 'hidden';
+                        reasonInput.name = 'rejectionReason';
+                        reasonInput.value = reason.trim();
+
+                        form.appendChild(tokenInput);
+                        form.appendChild(claimIdInput);
+                        form.appendChild(reasonInput);
+                        document.body.appendChild(form);
+                        form.submit();
+                    } else if (reason !== null) {
+                        alert('Please provide a valid rejection reason.');
+                    }
+                });
+            }
+        });
+    </script>
+}

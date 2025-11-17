@@ -1,0 +1,731 @@
+﻿@model The_CMCS.Models.Claim
+@{
+    ViewData["Title"] = "Claim Details";
+}
+
+<div class="page-title">
+    <h2>Claim Details</h2>
+    <a class="btn btn-outline-secondary" asp-action="Index">
+        <i class="fas fa-arrow-left me-2"></i>Back to Claims
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="claim-card">
+            <div class="card-header">
+                <h4 class="mb-0">
+                    <i class="fas fa-file-invoice-dollar me-2"></i>
+                    Claim @Model.Id
+                    <span class="status-badge status-@Model.Status.ToLower()">@Model.Status.ToUpper()</span>
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="detail-item">
+                            <label>Reference Number:</label>
+                            <span class="value">@Model.Id</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Submitted By:</label>
+                            <span class="value">@Model.LecturerName</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Department:</label>
+                            <span class="value">@Model.Department</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Claim Month:</label>
+                            <span class="value">@Model.Month</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="detail-item">
+                            <label>Hours Worked:</label>
+                            <span class="value">@Model.HoursWorked hours</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Hourly Rate:</label>
+                            <span class="value">R@(Model.HourlyRate.ToString("N0"))</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Total Amount:</label>
+                            <span class="value total-amount">R@(Model.TotalAmount.ToString("N0"))</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Submitted Date:</label>
+                            <span class="value">@Model.SubmittedDate.ToString("MMM dd, yyyy")</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-item full-width">
+                    <label>Description:</label>
+                    <div class="description-box">
+                        @Model.Description
+                    </div>
+                </div>
+
+                <!-- Approval Details -->
+                @if (Model.CoordinatorApproved)
+                {
+                    <div class="detail-item full-width">
+                        <label>Coordinator Approval:</label>
+                        <div class="approval-box approved">
+                            <i class="fas fa-check-circle me-2 text-success"></i>
+                            Approved by @Model.CoordinatorApprovedBy on @Model.CoordinatorApprovedDate?.ToString("MMM dd, yyyy")
+                        </div>
+                    </div>
+                }
+
+                @if (Model.ManagerApproved)
+                {
+                    <div class="detail-item full-width">
+                        <label>Manager Approval:</label>
+                        <div class="approval-box approved">
+                            <i class="fas fa-check-double me-2 text-success"></i>
+                            Approved by @Model.ManagerApprovedBy on @Model.ManagerApprovedDate?.ToString("MMM dd, yyyy")
+                        </div>
+                    </div>
+                }
+
+                @if (!string.IsNullOrEmpty(Model.RejectionReason))
+                {
+                    <div class="detail-item full-width">
+                        <label>Rejection Reason:</label>
+                        <div class="rejection-box">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            @Model.RejectionReason
+                            @if (!string.IsNullOrEmpty(Model.ReviewedBy))
+                            {
+                                <br />
+                                <small>Rejected by @Model.ReviewedBy on @Model.ReviewedDate?.ToString("MMM dd, yyyy")</small>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Progress Tracker -->
+        <div class="progress-tracker-card">
+            <h5><i class="fas fa-tasks me-2"></i>Approval Workflow</h5>
+            <div class="progress-tracker">
+                <div class="tracker-step completed">
+                    <div class="step-icon">
+                        <i class="fas fa-file-upload"></i>
+                    </div>
+                    <div class="step-label">
+                        <div>Submitted</div>
+                        <small class="text-muted">@Model.SubmittedDate.ToString("MMM dd")</small>
+                    </div>
+                </div>
+
+                <div class="tracker-step @(Model.CoordinatorApproved ? "completed" : Model.Status == "Rejected" && !string.IsNullOrEmpty(Model.CoordinatorApprovedBy) ? "rejected" : Model.Status == "Pending" ? "active" : "")">
+                    <div class="step-icon">
+                        <i class="fas @(Model.CoordinatorApproved ? "fa-user-check" : Model.Status == "Rejected" && !string.IsNullOrEmpty(Model.CoordinatorApprovedBy) ? "fa-times" : Model.Status == "Pending" ? "fa-user" : "fa-clock")"></i>
+                    </div>
+                    <div class="step-label">
+                        <div>Coordinator Review</div>
+                        @if (Model.CoordinatorApproved)
+                        {
+                            <small class="text-muted">Approved @Model.CoordinatorApprovedDate?.ToString("MMM dd")</small>
+                        }
+                        else if (Model.Status == "Rejected" && !string.IsNullOrEmpty(Model.CoordinatorApprovedBy))
+                        {
+                            <small class="text-muted">Rejected @Model.CoordinatorApprovedDate?.ToString("MMM dd")</small>
+                        }
+                        else
+                        {
+                            <small class="text-muted">Pending</small>
+                        }
+                    </div>
+                </div>
+
+                <div class="tracker-step @(Model.ManagerApproved ? "completed" : Model.Status == "Rejected" && !string.IsNullOrEmpty(Model.ManagerApprovedBy) ? "rejected" : Model.CoordinatorApproved ? "active" : "")">
+                    <div class="step-icon">
+                        <i class="fas @(Model.ManagerApproved ? "fa-user-tie" : Model.Status == "Rejected" && !string.IsNullOrEmpty(Model.ManagerApprovedBy) ? "fa-times" : Model.CoordinatorApproved ? "fa-user-tie" : "fa-clock")"></i>
+                    </div>
+                    <div class="step-label">
+                        <div>Manager Review</div>
+                        @if (Model.ManagerApproved)
+                        {
+                            <small class="text-muted">Approved @Model.ManagerApprovedDate?.ToString("MMM dd")</small>
+                        }
+                        else if (Model.Status == "Rejected" && !string.IsNullOrEmpty(Model.ManagerApprovedBy))
+                        {
+                            <small class="text-muted">Rejected @Model.ManagerApprovedDate?.ToString("MMM dd")</small>
+                        }
+                        else if (Model.CoordinatorApproved)
+                        {
+                            <small class="text-muted">Pending</small>
+                        }
+                        else
+                        {
+                            <small class="text-muted">Waiting for Coordinator</small>
+                        }
+                    </div>
+                </div>
+
+                <div class="tracker-step @(Model.Status == "Approved" ? "completed" : "")">
+                    <div class="step-icon">
+                        <i class="fas @(Model.Status == "Approved" ? "fa-check-double" : "fa-file-invoice-dollar")"></i>
+                    </div>
+                    <div class="step-label">
+                        <div>Final Approval</div>
+                        @if (Model.Status == "Approved")
+                        {
+                            <small class="text-muted">Completed @Model.ReviewedDate?.ToString("MMM dd")</small>
+                        }
+                        else
+                        {
+                            <small class="text-muted">Pending</small>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Current Status Summary -->
+        <div class="status-summary-card">
+            <h5><i class="fas fa-info-circle me-2"></i>Current Status</h5>
+            <div class="status-content">
+                @if (Model.Status == "Approved")
+                {
+                    <div class="status-message success">
+                        <i class="fas fa-check-circle me-2"></i>
+                        <strong>Claim Fully Approved!</strong>
+                        <p>Your claim has been approved by both Coordinator and Manager. Payment processing will begin shortly.</p>
+                    </div>
+                }
+                else if (Model.Status == "Rejected")
+                {
+                    <div class="status-message error">
+                        <i class="fas fa-times-circle me-2"></i>
+                        <strong>Claim Rejected</strong>
+                        <p>Your claim has been rejected. Please review the rejection reason above.</p>
+                    </div>
+                }
+                else if (Model.CoordinatorApproved)
+                {
+                    <div class="status-message info">
+                        <i class="fas fa-user-tie me-2"></i>
+                        <strong>With Academic Manager</strong>
+                        <p>Your claim has been approved by the coordinator and is now with the academic manager for final approval.</p>
+                    </div>
+                }
+                else
+                {
+                    <div class="status-message warning">
+                        <i class="fas fa-clock me-2"></i>
+                        <strong>Under Coordinator Review</strong>
+                        <p>Your claim is currently being reviewed by the programme coordinator.</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <!-- Quick Actions -->
+        <div class="action-card">
+            <h5><i class="fas fa-bolt me-2"></i>Quick Actions</h5>
+            <div class="action-buttons">
+                <a href="#" class="btn btn-outline-primary btn-block">
+                    <i class="fas fa-download me-2"></i>Export PDF
+                </a>
+                <a href="#" class="btn btn-outline-secondary btn-block">
+                    <i class="fas fa-print me-2"></i>Print
+                </a>
+                @if (Model.Status == "Pending" && !Model.CoordinatorApproved)
+                {
+                    <a href="#" class="btn btn-outline-warning btn-block">
+                        <i class="fas fa-edit me-2"></i>Edit Claim
+                    </a>
+                }
+            </div>
+        </div>
+
+        <!-- Supporting Documents -->
+        <div class="documents-card">
+            <h5><i class="fas fa-paperclip me-2"></i>Supporting Documents</h5>
+            @if (Model.Documents != null && Model.Documents.Any())
+            {
+                <div class="documents-list">
+                    @foreach (var doc in Model.Documents)
+                    {
+                        <div class="document-item">
+                            <i class="fas @GetFileIcon(doc.FileName) me-2"></i>
+                            <div class="document-info">
+                                <div class="document-name">@doc.FileName</div>
+                                <small class="text-muted">@((doc.FileSize / 1024.0 / 1024.0).ToString("F2")) MB</small>
+                            </div>
+                            <a href="@Url.Action("DownloadDocument", "Claims", new { id = doc.Id })" class="document-download" title="Download">
+                                <i class="fas fa-download"></i>
+                            </a>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="no-documents">
+                    <i class="fas fa-file-excel fa-2x text-muted mb-3"></i>
+                    <p class="text-muted">No supporting documents uploaded</p>
+                </div>
+            }
+        </div>
+
+        <!-- Timeline -->
+        <div class="timeline-card">
+            <h5><i class="fas fa-history me-2"></i>Claim Timeline</h5>
+            <div class="timeline">
+                <div class="timeline-item completed">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Claim Submitted</div>
+                        <div class="timeline-date">@Model.SubmittedDate.ToString("MMM dd, yyyy HH:mm")</div>
+                    </div>
+                </div>
+
+                @if (Model.CoordinatorApprovedDate.HasValue)
+                {
+                    <div class="timeline-item completed">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Approved by Coordinator</div>
+                            <div class="timeline-date">@Model.CoordinatorApprovedDate?.ToString("MMM dd, yyyy HH:mm")</div>
+                            <div class="timeline-desc">@Model.CoordinatorApprovedBy</div>
+                        </div>
+                    </div>
+                }
+
+                @if (Model.ManagerApprovedDate.HasValue)
+                {
+                    <div class="timeline-item completed">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Approved by Manager</div>
+                            <div class="timeline-date">@Model.ManagerApprovedDate?.ToString("MMM dd, yyyy HH:mm")</div>
+                            <div class="timeline-desc">@Model.ManagerApprovedBy</div>
+                        </div>
+                    </div>
+                }
+
+                @if (Model.Status == "Rejected" && Model.ReviewedDate.HasValue)
+                {
+                    <div class="timeline-item rejected">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Claim Rejected</div>
+                            <div class="timeline-date">@Model.ReviewedDate?.ToString("MMM dd, yyyy HH:mm")</div>
+                            <div class="timeline-desc">@Model.ReviewedBy</div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@functions {
+    public string GetFileIcon(string fileName)
+    {
+        if (string.IsNullOrEmpty(fileName))
+            return "fa-file text-secondary";
+
+        var extension = System.IO.Path.GetExtension(fileName)?.ToLower();
+        return extension switch
+        {
+            ".pdf" => "fa-file-pdf text-danger",
+            ".doc" => "fa-file-word text-primary",
+            ".docx" => "fa-file-word text-primary",
+            ".xls" => "fa-file-excel text-success",
+            ".xlsx" => "fa-file-excel text-success",
+            ".jpg" => "fa-file-image text-warning",
+            ".jpeg" => "fa-file-image text-warning",
+            ".png" => "fa-file-image text-warning",
+            ".gif" => "fa-file-image text-warning",
+            _ => "fa-file text-secondary"
+        };
+    }
+}
+
+@section Scripts {
+    <style>
+        .page-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .claim-card, .progress-tracker-card, .status-summary-card, .action-card, .documents-card, .timeline-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 20px 25px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .card-body {
+            padding: 25px;
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .status-pending {
+            background-color: #ffeaa7;
+            color: #d35400;
+        }
+
+        .status-approved {
+            background-color: #d5f5e3;
+            color: #27ae60;
+        }
+
+        .status-rejected {
+            background-color: #fadbd8;
+            color: #c0392b;
+        }
+
+        .detail-item {
+            margin-bottom: 20px;
+        }
+
+            .detail-item label {
+                font-weight: 600;
+                color: #6c757d;
+                display: block;
+                margin-bottom: 5px;
+                font-size: 14px;
+            }
+
+            .detail-item .value {
+                color: #2c3e50;
+                font-size: 16px;
+                font-weight: 500;
+            }
+
+            .detail-item.full-width {
+                grid-column: 1 / -1;
+            }
+
+        .description-box {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 8px;
+            line-height: 1.6;
+        }
+
+        .approval-box {
+            background: #d5f5e3;
+            border: 1px solid #c3e6cb;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 8px;
+            color: #155724;
+            font-weight: 500;
+        }
+
+        .rejection-box {
+            background: #fadbd8;
+            border: 1px solid #f5b7b1;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 8px;
+            color: #c0392b;
+            font-weight: 500;
+        }
+
+        .total-amount {
+            font-size: 18px !important;
+            font-weight: 700 !important;
+            color: #27ae60 !important;
+        }
+
+        /* Progress Tracker */
+        .progress-tracker {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+            position: relative;
+        }
+
+            .progress-tracker:before {
+                content: '';
+                position: absolute;
+                top: 25px;
+                left: 0;
+                right: 0;
+                height: 3px;
+                background-color: #e9ecef;
+                z-index: 1;
+            }
+
+        .tracker-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+            flex: 1;
+            text-align: center;
+        }
+
+        .step-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            color: #6c757d;
+            font-size: 18px;
+            border: 3px solid white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .step-label {
+            font-size: 12px;
+            color: #6c757d;
+            font-weight: 500;
+            text-align: center;
+        }
+
+            .step-label div {
+                font-weight: 600;
+                margin-bottom: 2px;
+            }
+
+        .tracker-step.active .step-icon {
+            background-color: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+
+        .tracker-step.active .step-label {
+            color: #3498db;
+            font-weight: 600;
+        }
+
+        .tracker-step.completed .step-icon {
+            background-color: #27ae60;
+            color: white;
+            border-color: #27ae60;
+        }
+
+        .tracker-step.completed .step-label {
+            color: #27ae60;
+        }
+
+        .tracker-step.rejected .step-icon {
+            background-color: #e74c3c;
+            color: white;
+            border-color: #e74c3c;
+        }
+
+        .tracker-step.rejected .step-label {
+            color: #e74c3c;
+        }
+
+        /* Status Summary */
+        .status-summary-card {
+            padding: 25px;
+        }
+
+            .status-summary-card h5 {
+                color: #2c3e50;
+                margin-bottom: 20px;
+                font-weight: 600;
+            }
+
+        .status-message {
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+
+            .status-message.success {
+                background-color: #d5f5e3;
+                border-left-color: #27ae60;
+                color: #155724;
+            }
+
+            .status-message.error {
+                background-color: #fadbd8;
+                border-left-color: #e74c3c;
+                color: #721c24;
+            }
+
+            .status-message.warning {
+                background-color: #fff3cd;
+                border-left-color: #ffc107;
+                color: #856404;
+            }
+
+            .status-message.info {
+                background-color: #d1ecf1;
+                border-left-color: #17a2b8;
+                color: #0c5460;
+            }
+
+        /* Action Card */
+        .action-card, .documents-card, .timeline-card {
+            padding: 25px;
+        }
+
+            .action-card h5, .documents-card h5, .timeline-card h5 {
+                color: #2c3e50;
+                margin-bottom: 20px;
+                font-weight: 600;
+            }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn-block {
+            width: 100%;
+            text-align: left;
+            padding: 12px 15px;
+        }
+
+        /* Documents */
+        .documents-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .document-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 3px solid #3498db;
+        }
+
+        .document-info {
+            flex: 1;
+        }
+
+        .document-name {
+            font-weight: 500;
+            color: #2c3e50;
+            font-size: 14px;
+        }
+
+        .document-download {
+            color: #3498db;
+            padding: 5px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+            .document-download:hover {
+                background-color: #ebf5fb;
+                color: #2980b9;
+            }
+
+        .no-documents {
+            text-align: center;
+            padding: 30px 20px;
+            color: #6c757d;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .timeline-marker {
+            position: absolute;
+            left: -20px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #e9ecef;
+            border: 2px solid white;
+            box-shadow: 0 0 0 3px #e9ecef;
+        }
+
+        .timeline-item.completed .timeline-marker {
+            background-color: #27ae60;
+            box-shadow: 0 0 0 3px #d5f5e3;
+        }
+
+        .timeline-item.rejected .timeline-marker {
+            background-color: #e74c3c;
+            box-shadow: 0 0 0 3px #fadbd8;
+        }
+
+        .timeline-content {
+            padding-left: 10px;
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 2px;
+        }
+
+        .timeline-date {
+            font-size: 12px;
+            color: #6c757d;
+            margin-bottom: 2px;
+        }
+
+        .timeline-desc {
+            font-size: 12px;
+            color: #3498db;
+            font-weight: 500;
+        }
+
+        .btn {
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .btn-outline-secondary {
+            border: 2px solid #6c757d;
+        }
+
+            .btn-outline-secondary:hover {
+                background-color: #6c757d;
+                color: white;
+                transform: translateY(-1px);
+            }
+    </style>
+}

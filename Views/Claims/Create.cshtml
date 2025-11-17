@@ -1,0 +1,430 @@
+﻿@model The_CMCS.Models.Claim
+@{
+    ViewData["Title"] = "Submit New Claim";
+}
+
+<div class="page-title">
+    <h2>Submit New Claim</h2>
+    <a class="btn btn-outline-secondary" asp-action="Index">
+        <i class="fas fa-arrow-left me-2"></i>Back to Claims
+    </a>
+</div>
+
+<div class="claim-form">
+    <form asp-action="Create" method="post" enctype="multipart/form-data" id="new-claim-form">
+        @Html.AntiForgeryToken()
+
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["SuccessMessage"]
+            </div>
+        }
+
+        <div class="form-section">
+            <h4 class="mb-3"><i class="fas fa-file-invoice me-2"></i>Claim Details</h4>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Month" class="form-label">Claim Month *</label>
+                    <select asp-for="Month" class="form-control" required>
+                        <option value="">Select Month</option>
+                        <option value="January 2026">January 2026</option>
+                        <option value="February 2026">February 2026</option>
+                        <option value="March 2026">March 2026</option>
+                        <option value="April 2026">April 2024</option>
+                        <option value="May 2026">May 2026</option>
+                        <option value="June 2026">June 2026</option>
+                        <option value="July 2026">July 2026</option>
+                        <option value="August 2026">August 2026</option>
+                        <option value="September 2026">September 2026</option>
+                        <option value="October 2026">October 2026</option>
+                        <option value="November 2026">November 2026</option>
+                        <option value="December 2026">December 2026</option>
+                    </select>
+                    <span asp-validation-for="Month" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Department" class="form-label">Department *</label>
+                    <select asp-for="Department" class="form-control" required>
+                        <option value="">Select Department</option>
+                        <option value="Computer Science">Computer Science</option>
+                        <option value="Mathematics">Mathematics</option>
+                        <option value="Engineering">Engineering</option>
+                        <option value="Law">Law</option>
+                        <option value="Accounting">Accounting</option>
+                        <option value="Business">Business</option>
+                        <option value="Education">Education</option>
+                        <option value="Humanity">Humanity</option>
+                        <option value="Public Health">Public Health</option>
+                    </select>
+                    <span asp-validation-for="Department" class="text-danger small"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="HoursWorked" class="form-label">Hours Worked *</label>
+                    <input asp-for="HoursWorked" type="number" class="form-control" min="1" max="200" required>
+                    <span asp-validation-for="HoursWorked" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="HourlyRate" class="form-label">Hourly Rate (R)</label>
+                    <input asp-for="HourlyRate" type="number" class="form-control" value="320" readonly>
+                    <small class="text-muted">Standard academic hourly rate</small>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label">Description of Work *</label>
+                <textarea asp-for="Description" class="form-control" rows="4" required placeholder="Describe the work performed, courses taught, research conducted, etc..."></textarea>
+                <span asp-validation-for="Description" class="text-danger small"></span>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h4 class="mb-3"><i class="fas fa-paperclip me-2"></i>Supporting Documents</h4>
+            <p class="text-muted mb-3">Upload supporting documents for your claim (PDF, DOCX, XLSX up to 5MB each)</p>
+
+            <div class="upload-area" id="upload-area">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <h5>Drag & Drop Files Here</h5>
+                <p class="text-muted">or</p>
+                <button type="button" class="btn btn-outline-primary" id="browse-files-btn">Browse Files</button>
+                <input type="file" id="file-input" name="supportingDocuments" multiple accept=".pdf,.docx,.xlsx" style="display: none;">
+            </div>
+
+            <div id="file-list-container" class="mt-3">
+                <ul class="file-list" id="file-list"></ul>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between mt-4 pt-3 border-top">
+            <a asp-action="Index" class="btn btn-outline-secondary">
+                <i class="fas fa-times me-2"></i>Cancel
+            </a>
+            <button type="submit" class="btn btn-primary" id="submit-btn">
+                <i class="fas fa-paper-plane me-2"></i>Submit Claim
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const uploadArea = document.getElementById('upload-area');
+            const fileInput = document.getElementById('file-input');
+            const fileList = document.getElementById('file-list');
+            const browseBtn = document.getElementById('browse-files-btn');
+            const form = document.getElementById('new-claim-form');
+            const submitBtn = document.getElementById('submit-btn');
+
+            browseBtn.addEventListener('click', function() {
+                fileInput.click();
+            });
+
+            fileInput.addEventListener('change', handleFileSelect);
+
+            uploadArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                uploadArea.style.backgroundColor = '#edf2f7';
+            });
+
+            uploadArea.addEventListener('dragleave', function() {
+                uploadArea.style.backgroundColor = '#f8fafc';
+            });
+
+            uploadArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                uploadArea.style.backgroundColor = '#f8fafc';
+                handleFileDrop(e);
+            });
+
+            function handleFileSelect(e) {
+                const files = e.target.files;
+                displaySelectedFiles(files);
+            }
+
+            function handleFileDrop(e) {
+                const files = e.dataTransfer.files;
+                displaySelectedFiles(files);
+                updateFileInput(files);
+            }
+
+            function updateFileInput(files) {
+                const dataTransfer = new DataTransfer();
+                for (let i = 0; i < files.length; i++) {
+                    dataTransfer.items.add(files[i]);
+                }
+                fileInput.files = dataTransfer.files;
+            }
+
+            function displaySelectedFiles(files) {
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+
+                    if (file.size > 5 * 1024 * 1024) {
+                        alert(`File ${file.name} is too large. Maximum file size is 5MB.`);
+                        continue;
+                    }
+
+                    const fileType = getFileType(file.name);
+                    const allowedTypes = ['pdf', 'docx', 'xlsx'];
+
+                    if (!allowedTypes.includes(fileType)) {
+                        alert(`File ${file.name} is not a supported format. Please upload PDF, DOCX, or XLSX files.`);
+                        continue;
+                    }
+
+                    const listItem = document.createElement('li');
+                    listItem.className = 'file-item';
+
+                    const fileInfo = document.createElement('div');
+                    fileInfo.className = 'file-preview';
+
+                    const fileIcon = getFileIcon(fileType);
+
+                    fileInfo.innerHTML = `
+                        <div class="file-icon">
+                            <i class="fas ${fileIcon}"></i>
+                        </div>
+                        <div class="file-name">${file.name}</div>
+                        <small class="text-muted ms-2">(${(file.size / 1024 / 1024).toFixed(2)} MB)</small>
+                    `;
+
+                    const removeBtn = document.createElement('span');
+                    removeBtn.className = 'file-remove';
+                    removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+                    removeBtn.addEventListener('click', function() {
+                        listItem.remove();
+                        removeFileFromInput(file.name);
+                    });
+
+                    listItem.appendChild(fileInfo);
+                    listItem.appendChild(removeBtn);
+                    fileList.appendChild(listItem);
+                }
+            }
+
+            function removeFileFromInput(fileName) {
+                const dataTransfer = new DataTransfer();
+                const currentFiles = fileInput.files;
+
+                for (let i = 0; i < currentFiles.length; i++) {
+                    if (currentFiles[i].name !== fileName) {
+                        dataTransfer.items.add(currentFiles[i]);
+                    }
+                }
+
+                fileInput.files = dataTransfer.files;
+            }
+
+            function getFileType(filename) {
+                const ext = filename.split('.').pop().toLowerCase();
+                return ext;
+            }
+
+            function getFileIcon(fileType) {
+                if (fileType === 'pdf') return 'fa-file-pdf text-danger';
+                if (fileType === 'docx') return 'fa-file-word text-primary';
+                if (fileType === 'xlsx') return 'fa-file-excel text-success';
+                return 'fa-file text-secondary';
+            }
+
+            form.addEventListener('submit', function(e) {
+                const requiredFields = form.querySelectorAll('[required]');
+                let isValid = true;
+
+                requiredFields.forEach(field => {
+                    if (!field.value.trim()) {
+                        isValid = false;
+                        field.classList.add('is-invalid');
+                    } else {
+                        field.classList.remove('is-invalid');
+                    }
+                });
+
+                if (!isValid) {
+                    e.preventDefault();
+                    alert('Please fill in all required fields.');
+                    return;
+                }
+
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Submitting...';
+            });
+        });
+    </script>
+
+    <style>
+        .page-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .claim-form {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+        }
+
+        .form-section {
+            margin-bottom: 40px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+            .form-section:last-of-type {
+                border-bottom: none;
+            }
+
+            .form-section h4 {
+                color: #2c3e50;
+                font-weight: 600;
+            }
+
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 8px;
+        }
+
+        .form-control {
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 12px 15px;
+            transition: all 0.3s;
+        }
+
+            .form-control:focus {
+                border-color: #3498db;
+                box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+            }
+
+            .form-control.is-invalid {
+                border-color: #e74c3c;
+            }
+
+        .upload-area {
+            border: 2px dashed #3498db;
+            border-radius: 12px;
+            padding: 40px 20px;
+            text-align: center;
+            background-color: #f8fafc;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+            .upload-area:hover {
+                background-color: #edf2f7;
+            }
+
+            .upload-area i.fa-cloud-upload-alt {
+                font-size: 48px;
+                color: #3498db;
+                margin-bottom: 15px;
+            }
+
+            .upload-area h5 {
+                color: #2c3e50;
+                font-weight: 600;
+                margin-bottom: 10px;
+            }
+
+        .file-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid #3498db;
+        }
+
+        .file-preview {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .file-icon {
+            font-size: 24px;
+        }
+
+        .file-name {
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        .file-remove {
+            color: #e74c3c;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+            .file-remove:hover {
+                background-color: #fadbd8;
+            }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            border: none;
+        }
+
+            .btn-primary:hover {
+                background: linear-gradient(135deg, #2980b9, #21618c);
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+            }
+
+        .btn-outline-secondary {
+            border: 2px solid #6c757d;
+            color: #6c757d;
+        }
+
+            .btn-outline-secondary:hover {
+                background-color: #6c757d;
+                color: white;
+            }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .alert {
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+        }
+
+        .text-danger.small {
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: block;
+        }
+    </style>
+}

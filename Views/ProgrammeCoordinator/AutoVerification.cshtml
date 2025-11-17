@@ -1,0 +1,156 @@
+﻿@model List<The_CMCS.Models.Claim>
+@{
+    ViewData["Title"] = "Auto Verification";
+}
+
+<div class="dashboard-header">
+    <div class="header-content">
+        <h1>Auto Verification</h1>
+        <p class="text-muted">Automated policy checking and bulk approval</p>
+    </div>
+</div>
+
+<form method="post" asp-action="BulkAutoApprove" id="bulkApproveForm">
+    @Html.AntiForgeryToken()
+
+    <div class="dashboard-section">
+        <div class="section-header">
+            <h3><i class="fas fa-robot me-2"></i>Claims for Automated Verification</h3>
+            <button type="submit" class="btn btn-success" id="bulkApproveBtn">
+                <i class="fas fa-check-double me-2"></i>Approve Selected
+            </button>
+        </div>
+
+        <div class="table-responsive">
+            <table class="dashboard-table">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" id="selectAll"></th>
+                        <th>Lecturer</th>
+                        <th>Department</th>
+                        <th>Month</th>
+                        <th>Hours</th>
+                        <th>Amount</th>
+                        <th>Policy Check</th>
+                        <th>Status</th>
+                        <th>Verify</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.ClaimsWithChecks)
+                    {
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="claimIds" value="@item.Claim.Id"
+                                       @(!item.IsValid ? "disabled" : "")>
+                            </td>
+                            <td>@item.Claim.LecturerName</td>
+                            <td>@item.Claim.Department</td>
+                            <td>@item.Claim.Month</td>
+                            <td>@item.Claim.HoursWorked hrs</td>
+                            <td>R@(item.Claim.TotalAmount.ToString("N0"))</td>
+                            <td>
+                                <div class="policy-check">
+                                    @if (item.IsValid)
+                                    {
+                                        <span class="badge bg-success">PASSED</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">FAILED</span>
+                                    }
+                                    <button type="button" class="btn btn-sm btn-outline-info view-policy"
+                                            data-check="@item.PolicyCheck">
+                                        View Details
+                                    </button>
+                                </div>
+                            </td>
+                            <td>
+                                @if (item.IsValid)
+                                {
+                                    <span class="badge bg-success">Ready for Auto-approval</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning">Requires Manual Review</span>
+                                }
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-sm btn-primary verify-single"
+                                        data-claim-id="@item.Claim.Id">
+                                    Re-check
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</form>
+
+<!-- Policy Check Modal -->
+<div class="modal fade" id="policyModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Policy Check Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <pre id="policyDetails" class="policy-pre"></pre>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Select all functionality
+            $('#selectAll').change(function() {
+                $('input[name="claimIds"]:not(:disabled)').prop('checked', this.checked);
+            });
+
+            // View policy details
+            $('.view-policy').click(function() {
+                var policyCheck = $(this).data('check');
+                $('#policyDetails').text(policyCheck);
+                $('#policyModal').modal('show');
+            });
+
+            // Single claim verification
+            $('.verify-single').click(function() {
+                var claimId = $(this).data('claim-id');
+                var button = $(this);
+
+                button.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Checking...');
+
+                $.post('@Url.Action("VerifyClaimPolicy", "ProgrammeCoordinator")', { claimId: claimId }, function(response) {
+                    if (response.success) {
+                        // Reload page to see updated results
+                        location.reload();
+                    }
+                }).always(function() {
+                    button.prop('disabled', false).html('Re-check');
+                });
+            });
+        });
+    </script>
+
+    <style>
+        .policy-pre {
+            white-space: pre-wrap;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+        }
+
+        .policy-check {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+    </style>
+}
