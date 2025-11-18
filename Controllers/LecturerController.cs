@@ -4,16 +4,19 @@ using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 using The_CMCS.Models;
 using The_CMCS.Services;
+using Microsoft.AspNetCore.Hosting;
 
 namespace The_CMCS.Controllers
 {
     public class LecturerController : Controller
     {
         private readonly IClaimsService _claimsService;
+        private readonly IWebHostEnvironment _environment;
 
-        public LecturerController(IClaimsService claimsService)
+        public LecturerController(IClaimsService claimsService, IWebHostEnvironment environment)
         {
             _claimsService = claimsService;
+            _environment = environment;
         }
 
         public IActionResult Dashboard()
@@ -53,8 +56,9 @@ namespace The_CMCS.Controllers
 
             var claim = new The_CMCS.Models.Claim
             {
-                HourlyRate = currentUser.HourlyRate, // Auto-populate from HR data
-                Department = currentUser.Department
+                HourlyRate = currentUser.HourlyRate,
+                Department = currentUser.Department,
+                Month = DateTime.Now.ToString("yyyy-MM") // Default to current month
             };
             ViewBag.CurrentUser = currentUser;
             return View(claim);
@@ -62,60 +66,139 @@ namespace The_CMCS.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(The_CMCS.Models.Claim claim, List<IFormFile> supportingDocuments)
+        public async Task<IActionResult> Create(The_CMCS.Models.Claim claim, List<IFormFile> supportingDocuments)
         {
             var currentUser = GetCurrentUser();
             if (currentUser?.Role != "Lecturer")
                 return RedirectToAction("Login", "Home");
 
-            // Remove model state errors for fields that will be set programmatically
-            ModelState.Remove("LecturerId");
-            ModelState.Remove("LecturerName");
-            ModelState.Remove("Status");
-            ModelState.Remove("SubmittedDate");
-            ModelState.Remove("HourlyRate");
-            ModelState.Remove("Department");
-            ModelState.Remove("TotalAmount");
+            Console.WriteLine("=== CREATE CLAIM STARTED ===");
 
-            if (ModelState.IsValid)
+            // Clear the model state completely and rebuild validation
+            ModelState.Clear();
+
+            // Manually validate required fields
+            if (string.IsNullOrEmpty(claim.Month))
             {
-                try
+                ModelState.AddModelError("Month", "Month is required.");
+            }
+
+            if (claim.HoursWorked <= 0)
+            {
+                ModelState.AddModelError("HoursWorked", "Hours worked must be greater than 0.");
+            }
+
+            if (claim.HoursWorked > 180)
+            {
+                ModelState.AddModelError("HoursWorked", "Hours worked cannot exceed 180 hours per month.");
+            }
+
+            if (string.IsNullOrEmpty(claim.Description))
+            {
+                ModelState.AddModelError("Description", "Description is required.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
+                Console.WriteLine($"Validation errors: {string.Join(", ", errors)}");
+                ViewBag.CurrentUser = currentUser;
+                return View(claim);
+            }
+
+            try
+            {
+                Console.WriteLine("Model is valid, processing claim...");
+
+                // Generate claim ID
+                claim.Id = GenerateClaimId();
+                claim.LecturerId = currentUser.Id;
+                claim.LecturerName = currentUser.Name;
+                claim.Status = "Pending";
+                claim.SubmittedDate = DateTime.Now;
+                claim.HourlyRate = currentUser.HourlyRate;
+                claim.Department = currentUser.Department;
+
+                // Initialize workflow fields
+                claim.CoordinatorApproved = false;
+                claim.ManagerApproved = false;
+                claim.CoordinatorApprovedBy = null;
+                claim.ManagerApprovedBy = null;
+                claim.CoordinatorApprovedDate = null;
+                claim.ManagerApprovedDate = null;
+                claim.ReviewedBy = null;
+                claim.ReviewedDate = null;
+                claim.RejectionReason = null;
+
+                // Calculate total amount
+                claim.TotalAmount = claim.HoursWorked * claim.HourlyRate;
+
+                Console.WriteLine($"Claim Details:");
+                Console.WriteLine($"ID: {claim.Id}");
+                Console.WriteLine($"Lecturer: {claim.LecturerName}");
+                Console.WriteLine($"Month: {claim.Month}");
+                Console.WriteLine($"Hours: {claim.HoursWorked}");
+                Console.WriteLine($"Rate: {claim.HourlyRate}");
+                Console.WriteLine($"Total: {claim.TotalAmount}");
+
+                // Handle file uploads
+                if (supportingDocuments != null && supportingDocuments.Count > 0)
                 {
-                    // Add lecturer information to the claim
-                    claim.LecturerId = currentUser.Id;
-                    claim.LecturerName = currentUser.Name;
-                    claim.Status = "Pending";
-                    claim.SubmittedDate = DateTime.Now;
-                    claim.HourlyRate = currentUser.HourlyRate; // Use HR-set rate
-                    claim.Department = currentUser.Department;
+                    Console.WriteLine($"Processing {supportingDocuments.Count} files");
+                    claim.Documents = new List<SupportingDocument>();
 
-                    // TotalAmount is calculated automatically by the property getter
-
-                    // Validation: Maximum hours per month
-                    if (claim.HoursWorked > 180)
+                    foreach (var file in supportingDocuments)
                     {
-                        ModelState.AddModelError("HoursWorked", "Hours worked cannot exceed 180 hours per month.");
-                        ViewBag.CurrentUser = currentUser;
-                        return View(claim);
-                    }
+                        if (file.Length > 0)
+                        {
+                            var uploadsFolder = Path.Combine(_environment.WebRootPath, "uploads");
+                            if (!Directory.Exists(uploadsFolder))
+                                Directory.CreateDirectory(uploadsFolder);
 
-                    // Save claim and documents
-                    var result = _claimsService.CreateClaim(claim, supportingDocuments);
+                            var uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+                            var filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
-                    if (result)
-                    {
-                        TempData["SuccessMessage"] = "Claim submitted successfully! It is now pending coordinator review.";
-                        return RedirectToAction("Dashboard");
-                    }
-                    else
-                    {
-                        TempData["ErrorMessage"] = "Failed to submit claim. Please try again.";
+                            using (var stream = new FileStream(filePath, FileMode.Create))
+                            {
+                                await file.CopyToAsync(stream);
+                            }
+
+                            var document = new SupportingDocument
+                            {
+                                Id = "DOC-" + Guid.NewGuid().ToString(),
+                                ClaimId = claim.Id,
+                                FileName = file.FileName,
+                                FileType = Path.GetExtension(file.FileName),
+                                FileData = await GetFileBytes(file),
+                                UploadedDate = DateTime.Now,
+                                FilePath = uniqueFileName
+                            };
+
+                            claim.Documents.Add(document);
+                            Console.WriteLine($"Uploaded document: {file.FileName}");
+                        }
                     }
                 }
-                catch (Exception ex)
+
+                // Save claim using the correct service method
+                var result = _claimsService.AddClaim(claim);
+                if (result)
                 {
-                    TempData["ErrorMessage"] = $"Error submitting claim: {ex.Message}";
+                    Console.WriteLine("Claim created successfully!");
+                    TempData["SuccessMessage"] = "Claim submitted successfully! It will be reviewed by the coordinator and manager.";
+                    return RedirectToAction("Dashboard");
                 }
+                else
+                {
+                    Console.WriteLine("Failed to create claim in service");
+                    TempData["ErrorMessage"] = "Failed to submit claim. Please try again.";
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception: {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+                TempData["ErrorMessage"] = $"Error submitting claim: {ex.Message}";
             }
 
             ViewBag.CurrentUser = currentUser;
@@ -176,38 +259,50 @@ namespace The_CMCS.Controllers
             if (existingClaim == null || existingClaim.LecturerId != currentUser.Id || existingClaim.Status != "Pending")
                 return NotFound();
 
-            // Remove model state errors for fields that cannot be edited
-            ModelState.Remove("HourlyRate");
-            ModelState.Remove("Department");
-            ModelState.Remove("TotalAmount");
+            // Clear model state and manually validate
+            ModelState.Clear();
 
-            if (ModelState.IsValid)
+            if (string.IsNullOrEmpty(updatedClaim.Month))
             {
-                // Validation: Maximum hours per month
-                if (updatedClaim.HoursWorked > 180)
-                {
-                    ModelState.AddModelError("HoursWorked", "Hours worked cannot exceed 180 hours per month.");
-                    ViewBag.CurrentUser = currentUser;
-                    return View(updatedClaim);
-                }
+                ModelState.AddModelError("Month", "Month is required.");
+            }
 
-                // Update claim details (preserve HR-set values)
-                existingClaim.Month = updatedClaim.Month;
-                existingClaim.HoursWorked = updatedClaim.HoursWorked;
-                existingClaim.Description = updatedClaim.Description;
+            if (updatedClaim.HoursWorked <= 0)
+            {
+                ModelState.AddModelError("HoursWorked", "Hours worked must be greater than 0.");
+            }
 
-                // TotalAmount is calculated automatically by the property getter
+            if (updatedClaim.HoursWorked > 180)
+            {
+                ModelState.AddModelError("HoursWorked", "Hours worked cannot exceed 180 hours per month.");
+            }
 
-                var result = _claimsService.UpdateClaim(existingClaim);
-                if (result)
-                {
-                    TempData["SuccessMessage"] = "Claim updated successfully!";
-                    return RedirectToAction("Dashboard");
-                }
-                else
-                {
-                    TempData["ErrorMessage"] = "Failed to update claim. Please try again.";
-                }
+            if (string.IsNullOrEmpty(updatedClaim.Description))
+            {
+                ModelState.AddModelError("Description", "Description is required.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.CurrentUser = currentUser;
+                return View(updatedClaim);
+            }
+
+            // Update claim details (preserve HR-set values)
+            existingClaim.Month = updatedClaim.Month;
+            existingClaim.HoursWorked = updatedClaim.HoursWorked;
+            existingClaim.Description = updatedClaim.Description;
+            existingClaim.TotalAmount = existingClaim.HoursWorked * existingClaim.HourlyRate;
+
+            var result = _claimsService.UpdateClaim(existingClaim);
+            if (result)
+            {
+                TempData["SuccessMessage"] = "Claim updated successfully!";
+                return RedirectToAction("Dashboard");
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Failed to update claim. Please try again.";
             }
 
             ViewBag.CurrentUser = currentUser;
@@ -223,33 +318,65 @@ namespace The_CMCS.Controllers
             return null;
         }
 
-        // NEW: Auto-calculation endpoint for real-time calculation
+        // Auto-calculation endpoint for real-time calculation
         [HttpPost]
         public JsonResult AutoCalculate(decimal hoursWorked, decimal hourlyRate)
         {
             try
             {
-                var tempClaim = new Models.Claim
-                {
-                    HoursWorked = hoursWorked,
-                    HourlyRate = hourlyRate
-                };
-
-                var calculatedClaim = _claimsService.AutoCalculateClaim(tempClaim);
-                var (isValid, errors) = _claimsService.ValidateClaimSubmission(calculatedClaim);
+                var totalAmount = hoursWorked * hourlyRate;
+                var isValid = hoursWorked <= 180 && hoursWorked > 0;
 
                 return Json(new
                 {
                     success = true,
-                    totalAmount = calculatedClaim.TotalAmount,
+                    totalAmount = totalAmount,
                     isValid = isValid,
-                    validationMessage = isValid ? "All validations passed" : errors
+                    validationMessage = isValid ? "All validations passed" : "Hours must be between 1 and 180"
                 });
             }
             catch (Exception ex)
             {
                 return Json(new { success = false, error = ex.Message });
             }
+        }
+
+        private async Task<byte[]> GetFileBytes(IFormFile file)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                await file.CopyToAsync(memoryStream);
+                return memoryStream.ToArray();
+            }
+        }
+
+        private string GenerateClaimId()
+        {
+            var claims = _claimsService.GetAllClaims();
+            var nextId = claims.Count + 1;
+            return $"CLM-{DateTime.Now:yyyyMMdd}-{nextId.ToString().PadLeft(4, '0')}";
+        }
+        // GET: Download Document
+        public IActionResult DownloadDocument(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                return NotFound();
+
+            var document = _claimsService.GetDocumentById(id);
+            if (document == null)
+                return NotFound();
+
+            var currentUser = GetCurrentUser();
+            var claim = _claimsService.GetClaimById(document.ClaimId);
+
+            // Check if the current user owns this claim or is authorized to view it
+            if (claim.LecturerId != currentUser?.Id && currentUser?.Role != "Coordinator" && currentUser?.Role != "Manager")
+                return Forbid();
+
+            if (document.FileData == null || document.FileData.Length == 0)
+                return NotFound();
+
+            return File(document.FileData, "application/octet-stream", document.FileName);
         }
     }
 }

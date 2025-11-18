@@ -1,0 +1,442 @@
+﻿@model The_CMCS.Models.Claim
+@{
+    ViewData["Title"] = "Edit Claim";
+    var currentUser = ViewBag.CurrentUser as The_CMCS.Models.User;
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-header mb-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h1 class="h2">Edit Claim</h1>
+                        <p class="text-muted">Update your claim information</p>
+                    </div>
+                    <a class="btn btn-outline-secondary" asp-action="Dashboard">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-edit me-2"></i>Edit Claim @Model.Id
+                        <span class="status-badge status-pending float-end">
+                            <i class="fas fa-clock me-1"></i>PENDING
+                        </span>
+                    </h5>
+                </div>
+                <div class="card-body">
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="fas fa-exclamation-triangle me-2"></i>@TempData["ErrorMessage"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
+
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="fas fa-check-circle me-2"></i>@TempData["SuccessMessage"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
+
+                    <form asp-action="Edit" method="post" id="editClaimForm">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="Id" />
+
+                        <!-- Display validation summary at the top -->
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Month" class="form-label">Month *</label>
+                                    <input asp-for="Month" type="month" class="form-control"
+                                           required max="@DateTime.Now.ToString("yyyy-MM")" />
+                                    <span asp-validation-for="Month" class="text-danger small"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="HoursWorked" class="form-label">Hours Worked *</label>
+                                    <input asp-for="HoursWorked" type="number" step="0.5" min="0.5" max="180"
+                                           class="form-control" id="hoursWorked" required
+                                           placeholder="Enter hours worked" />
+                                    <span asp-validation-for="HoursWorked" class="text-danger small"></span>
+                                    <small class="form-text text-muted">Maximum 180 hours per month</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Hourly Rate</label>
+                                    <input type="text" class="form-control" value="R @Model.HourlyRate.ToString("N2")" readonly />
+                                    <small class="form-text text-muted">Set by HR department - cannot be changed</small>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Total Amount</label>
+                                    <input type="text" class="form-control" id="totalAmount" readonly
+                                           value="R @Model.TotalAmount.ToString("N2")" />
+                                    <small class="form-text text-muted">Calculated automatically</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Department</label>
+                                    <input type="text" class="form-control" value="@Model.Department" readonly />
+                                    <small class="form-text text-muted">Your assigned department</small>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Submitted Date</label>
+                                    <input type="text" class="form-control" value="@Model.SubmittedDate.ToString("MMM dd, yyyy")" readonly />
+                                    <small class="form-text text-muted">Original submission date</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label">Description *</label>
+                            <textarea asp-for="Description" class="form-control" rows="4"
+                                      placeholder="Describe the teaching activities, courses, or responsibilities covered..."
+                                      required></textarea>
+                            <span asp-validation-for="Description" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Current Documents (Read-only) -->
+                        <div class="mb-4">
+                            <label class="form-label">Current Supporting Documents</label>
+                            @if (Model.Documents != null && Model.Documents.Any())
+                            {
+                                <div class="current-documents">
+                                    @foreach (var doc in Model.Documents)
+                                    {
+                                        <div class="document-item readonly">
+                                            <i class="fas @GetFileIcon(doc.FileName) me-2"></i>
+                                            <div class="document-info">
+                                                <div class="document-name">@doc.FileName</div>
+                                                <small class="text-muted">Uploaded on @doc.UploadedDate.ToString("MMM dd, yyyy")</small>
+                                            </div>
+                                            <a href="@Url.Action("DownloadDocument", "Lecturer", new { id = doc.Id })" class="document-download" title="Download">
+                                                <i class="fas fa-download"></i>
+                                            </a>
+                                        </div>
+                                    }
+                                </div>
+                                <small class="form-text text-muted">Existing documents cannot be modified. To add new documents, please create a new claim.</small>
+                            }
+                            else
+                            {
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle me-2"></i>No supporting documents attached to this claim.
+                                </div>
+                            }
+                        </div>
+
+                        <div class="alert alert-warning">
+                            <h6 class="alert-heading">
+                                <i class="fas fa-exclamation-triangle me-2"></i>Important Notes
+                            </h6>
+                            <ul class="mb-0">
+                                <li>You can only edit claims that are in "Pending" status</li>
+                                <li>Once a claim is approved or rejected by the coordinator, it cannot be edited</li>
+                                <li>Changes to hours worked will automatically update the total amount</li>
+                                <li>Supporting documents cannot be modified - create a new claim if you need to add documents</li>
+                                <li>Your claim will return to the coordinator for review after editing</li>
+                            </ul>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary" id="submitBtn">
+                                <i class="fas fa-save me-2"></i>Update Claim
+                            </button>
+                            <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </a>
+                            <a asp-action="Dashboard" class="btn btn-outline-info ms-auto">
+                                <i class="fas fa-home me-2"></i>Dashboard
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@functions {
+    public string GetFileIcon(string fileName)
+    {
+        if (string.IsNullOrEmpty(fileName))
+            return "fa-file text-secondary";
+
+        var extension = System.IO.Path.GetExtension(fileName)?.ToLower();
+        return extension switch
+        {
+            ".pdf" => "fa-file-pdf text-danger",
+            ".doc" => "fa-file-word text-primary",
+            ".docx" => "fa-file-word text-primary",
+            ".xls" => "fa-file-excel text-success",
+            ".xlsx" => "fa-file-excel text-success",
+            ".jpg" => "fa-file-image text-warning",
+            ".jpeg" => "fa-file-image text-warning",
+            ".png" => "fa-file-image text-warning",
+            ".gif" => "fa-file-image text-warning",
+            _ => "fa-file text-secondary"
+        };
+    }
+}
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            const hourlyRate = @Model.HourlyRate;
+
+            function calculateTotal() {
+                const hours = parseFloat($('#hoursWorked').val()) || 0;
+                const total = hours * hourlyRate;
+                $('#totalAmount').val('R ' + total.toFixed(2));
+
+                // Validate hours
+                if (hours > 180) {
+                    $('#hoursWorked').addClass('is-invalid');
+                    $('#submitBtn').prop('disabled', true);
+                } else {
+                    $('#hoursWorked').removeClass('is-invalid');
+                    $('#submitBtn').prop('disabled', false);
+                }
+            }
+
+            $('#hoursWorked').on('input', calculateTotal);
+
+            // Initial calculation
+            calculateTotal();
+
+            // Form validation
+            $('#editClaimForm').on('submit', function (e) {
+                const hours = parseFloat($('#hoursWorked').val()) || 0;
+                const month = $('#Month').val();
+                const description = $('#Description').val().trim();
+
+                let errors = [];
+
+                if (!month) {
+                    errors.push('Please select a month.');
+                }
+
+                if (hours > 180) {
+                    errors.push('Hours worked cannot exceed 180 hours per month.');
+                }
+
+                if (hours <= 0) {
+                    errors.push('Please enter valid hours worked.');
+                }
+
+                if (!description) {
+                    errors.push('Please enter a description.');
+                }
+
+                if (errors.length > 0) {
+                    e.preventDefault();
+                    alert('Please fix the following errors:\n\n' + errors.join('\n'));
+                    return false;
+                }
+
+                // Show loading state
+                $('#submitBtn').prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i>Updating...');
+                return true;
+            });
+
+            // Confirm navigation away if there are unsaved changes
+            let formChanged = false;
+            $('#editClaimForm').on('change', 'input, textarea, select', function() {
+                formChanged = true;
+            });
+
+            $('a.btn').on('click', function(e) {
+                if (formChanged) {
+                    const confirmLeave = confirm('You have unsaved changes. Are you sure you want to leave this page?');
+                    if (!confirmLeave) {
+                        e.preventDefault();
+                    }
+                }
+            });
+        });
+    </script>
+
+    <style>
+        .page-header {
+            padding: 20px 0;
+            border-bottom: 2px solid #e9ecef;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            border: none;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            border-radius: 15px;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white;
+            border-radius: 15px 15px 0 0 !important;
+            padding: 20px 25px;
+        }
+
+            .card-header h5 {
+                margin: 0;
+                font-weight: 600;
+            }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 8px;
+        }
+
+        .form-control {
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            padding: 12px 15px;
+            transition: all 0.3s;
+        }
+
+            .form-control:focus {
+                border-color: #f39c12;
+                box-shadow: 0 0 0 0.2rem rgba(243, 156, 18, 0.25);
+            }
+
+            .form-control.is-invalid {
+                border-color: #e74c3c;
+            }
+
+            .form-control:read-only {
+                background-color: #f8f9fa;
+                border-color: #e9ecef;
+                color: #6c757d;
+            }
+
+        .btn {
+            border-radius: 10px;
+            padding: 12px 25px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            border: none;
+        }
+
+            .btn-primary:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(243, 156, 18, 0.4);
+            }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .alert {
+            border-radius: 10px;
+            border: none;
+        }
+
+        .text-danger.small {
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: block;
+        }
+
+        .field-validation-error {
+            color: #dc3545;
+            font-size: 0.875rem;
+            display: block;
+            margin-top: 0.25rem;
+        }
+
+        /* Documents Styling */
+        .current-documents {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .document-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 3px solid #3498db;
+        }
+
+            .document-item.readonly {
+                border-left-color: #6c757d;
+                background: #e9ecef;
+            }
+
+        .document-info {
+            flex: 1;
+        }
+
+        .document-name {
+            font-weight: 500;
+            color: #2c3e50;
+            font-size: 14px;
+        }
+
+        .document-download {
+            color: #3498db;
+            padding: 5px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+            .document-download:hover {
+                background-color: #ebf5fb;
+                color: #2980b9;
+            }
+
+        .form-text {
+            font-size: 0.875rem;
+            color: #6c757d;
+            margin-top: 0.25rem;
+        }
+    </style>
+}

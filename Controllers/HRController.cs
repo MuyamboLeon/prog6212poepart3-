@@ -80,30 +80,105 @@ namespace The_CMCS.Controllers
             if (currentUser?.Role != "HR")
                 return RedirectToAction("Login", "Home");
 
-            if (ModelState.IsValid)
+            Console.WriteLine("=== CREATE USER STARTED ===");
+            Console.WriteLine($"ModelState IsValid: {ModelState.IsValid}");
+
+            // Clear model state and manually validate
+            ModelState.Clear();
+
+            // Manual validation
+            if (string.IsNullOrEmpty(user.Name))
             {
+                ModelState.AddModelError("Name", "Name is required.");
+            }
+
+            if (string.IsNullOrEmpty(user.Email))
+            {
+                ModelState.AddModelError("Email", "Email is required.");
+            }
+            else if (!IsValidEmail(user.Email))
+            {
+                ModelState.AddModelError("Email", "Please enter a valid email address.");
+            }
+
+            if (string.IsNullOrEmpty(user.Role))
+            {
+                ModelState.AddModelError("Role", "Role is required.");
+            }
+
+            if (string.IsNullOrEmpty(user.Department))
+            {
+                ModelState.AddModelError("Department", "Department is required.");
+            }
+
+            if (user.Role == "Lecturer" && user.HourlyRate <= 0)
+            {
+                ModelState.AddModelError("HourlyRate", "Hourly rate is required for lecturers.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
+                Console.WriteLine($"Validation errors: {string.Join(", ", errors)}");
+                TempData["ErrorMessage"] = $"Please fix validation errors: {string.Join(", ", errors)}";
+                return View(user);
+            }
+
+            try
+            {
+                Console.WriteLine("Model is valid, processing user creation...");
+
+                // Generate user ID
+                user.Id = GenerateUserId();
+                user.CreatedDate = DateTime.Now;
+                user.IsActive = true;
+
+                // Set default password
+                user.Password = "Welcome123"; // Default password
+                Console.WriteLine("Set default password: Welcome123");
+
                 // Generate username if not provided
                 if (string.IsNullOrEmpty(user.Username))
                 {
                     user.Username = GenerateUsername(user.Name);
+                    Console.WriteLine($"Generated username: {user.Username}");
                 }
 
-                // Set default password if not provided
-                if (string.IsNullOrEmpty(user.Password))
+                // Set default hourly rate for non-lecturers
+                if (user.Role != "Lecturer")
                 {
-                    user.Password = "Welcome123"; // Default password
+                    user.HourlyRate = 0;
                 }
+
+                Console.WriteLine($"User Details:");
+                Console.WriteLine($"ID: {user.Id}");
+                Console.WriteLine($"Name: {user.Name}");
+                Console.WriteLine($"Username: {user.Username}");
+                Console.WriteLine($"Email: {user.Email}");
+                Console.WriteLine($"Role: {user.Role}");
+                Console.WriteLine($"Department: {user.Department}");
+                Console.WriteLine($"Hourly Rate: {user.HourlyRate}");
+                Console.WriteLine($"Phone: {user.PhoneNumber}");
+                Console.WriteLine($"Password: {user.Password}");
 
                 var result = _claimsService.AddUser(user);
                 if (result)
                 {
-                    TempData["SuccessMessage"] = $"User {user.Name} created successfully!";
+                    Console.WriteLine("User created successfully!");
+                    TempData["SuccessMessage"] = $"User {user.Name} created successfully! Default password: Welcome123";
                     return RedirectToAction("ManageUsers");
                 }
                 else
                 {
-                    TempData["ErrorMessage"] = "Failed to create user. Please try again.";
+                    Console.WriteLine("Failed to create user in service");
+                    TempData["ErrorMessage"] = "Failed to create user. The username or email might already exist.";
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception: {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+                TempData["ErrorMessage"] = $"Error creating user: {ex.Message}";
             }
 
             return View(user);
@@ -133,18 +208,52 @@ namespace The_CMCS.Controllers
             if (currentUser?.Role != "HR")
                 return RedirectToAction("Login", "Home");
 
-            if (ModelState.IsValid)
+            // Clear model state and manually validate
+            ModelState.Clear();
+
+            if (string.IsNullOrEmpty(user.Name))
             {
-                var result = _claimsService.UpdateUser(user);
-                if (result)
-                {
-                    TempData["SuccessMessage"] = $"User {user.Name} updated successfully!";
-                    return RedirectToAction("ManageUsers");
-                }
-                else
-                {
-                    TempData["ErrorMessage"] = "Failed to update user. Please try again.";
-                }
+                ModelState.AddModelError("Name", "Name is required.");
+            }
+
+            if (string.IsNullOrEmpty(user.Email))
+            {
+                ModelState.AddModelError("Email", "Email is required.");
+            }
+            else if (!IsValidEmail(user.Email))
+            {
+                ModelState.AddModelError("Email", "Please enter a valid email address.");
+            }
+
+            if (string.IsNullOrEmpty(user.Role))
+            {
+                ModelState.AddModelError("Role", "Role is required.");
+            }
+
+            if (string.IsNullOrEmpty(user.Department))
+            {
+                ModelState.AddModelError("Department", "Department is required.");
+            }
+
+            if (user.Role == "Lecturer" && user.HourlyRate <= 0)
+            {
+                ModelState.AddModelError("HourlyRate", "Hourly rate is required for lecturers.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(user);
+            }
+
+            var result = _claimsService.UpdateUser(user);
+            if (result)
+            {
+                TempData["SuccessMessage"] = $"User {user.Name} updated successfully!";
+                return RedirectToAction("ManageUsers");
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Failed to update user. Please try again.";
             }
 
             return View(user);
@@ -276,7 +385,7 @@ namespace The_CMCS.Controllers
                 var pdfData = _claimsService.GenerateInvoicePdf(claim);
                 if (pdfData != null && pdfData.Length > 0)
                 {
-                    var fileName = $"Invoice_{claim.Id}_{DateTime.Now:yyyyMMddHHmmss}.txt"; // Using .txt for simulation
+                    var fileName = $"Invoice_{claim.Id}_{DateTime.Now:yyyyMMddHHmmss}.txt";
                     return File(pdfData, "text/plain", fileName);
                 }
                 else
@@ -370,9 +479,19 @@ namespace The_CMCS.Controllers
             return View(overview);
         }
 
+        private string GenerateUserId()
+        {
+            var users = _claimsService.GetAllUsers();
+            var nextId = users.Count + 1;
+            return $"USR-{DateTime.Now:yyyyMMdd}-{nextId.ToString().PadLeft(4, '0')}";
+        }
+
         private string GenerateUsername(string fullName)
         {
-            var names = fullName.Split(' ');
+            if (string.IsNullOrEmpty(fullName))
+                return $"user{DateTime.Now:yyyyMMddHHmmss}";
+
+            var names = fullName.Trim().Split(' ');
             var firstName = names[0].ToLower();
             var lastName = names.Length > 1 ? names[^1].ToLower() : "";
 
@@ -381,13 +500,26 @@ namespace The_CMCS.Controllers
             var counter = 1;
 
             // Ensure unique username
-            while (_claimsService.GetAllUsers().Any(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase)))
+            while (_claimsService.GetAllUsers().Any(u => u.Username?.Equals(username, StringComparison.OrdinalIgnoreCase) == true))
             {
                 username = $"{baseUsername}{counter}";
                 counter++;
             }
 
             return username;
+        }
+
+        private bool IsValidEmail(string email)
+        {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         private User GetCurrentUser()
@@ -406,63 +538,5 @@ namespace The_CMCS.Controllers
                 return null;
             }
         }
-
-            // NEW: Automated Reports Management
-public IActionResult AutomatedReports()
-        {
-            var currentUser = GetCurrentUser();
-            if (currentUser?.Role != "HR")
-                return RedirectToAction("Login", "Home");
-
-            var reports = _claimsService.GetGeneratedReports();
-            return View(reports);
-        }
-
-        // NEW: Validation Rules Management
-        public IActionResult ValidationRules()
-        {
-            var currentUser = GetCurrentUser();
-            if (currentUser?.Role != "HR")
-                return RedirectToAction("Login", "Home");
-
-            var rules = _claimsService.GetValidationRules();
-            return View(rules);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult UpdateValidationRule(ClaimValidationRule rule)
-        {
-            var currentUser = GetCurrentUser();
-            if (currentUser?.Role != "HR")
-                return RedirectToAction("Login", "Home");
-
-            var result = _claimsService.UpdateValidationRule(rule);
-            if (result)
-            {
-                TempData["SuccessMessage"] = "Validation rule updated successfully!";
-            }
-            else
-            {
-                TempData["ErrorMessage"] = "Failed to update validation rule.";
-            }
-
-            return RedirectToAction("ValidationRules");
-        }
-
-        // NEW: Download generated report
-        public IActionResult DownloadReport(string reportId)
-        {
-            var currentUser = GetCurrentUser();
-            if (currentUser?.Role != "HR")
-                return RedirectToAction("Login", "Home");
-
-            var report = _claimsService.GetReportById(reportId);
-            if (report == null)
-                return NotFound();
-
-            var fileName = $"{report.Title}_{report.GeneratedDate:yyyyMMddHHmmss}.json";
-            return File(report.ReportData, "application/json", fileName);
-        }
     }
-    }
+}

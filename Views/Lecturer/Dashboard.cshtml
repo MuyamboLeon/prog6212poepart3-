@@ -14,11 +14,27 @@
             <h1>Welcome Back!</h1>
             <p class="text-muted">Here's your claims overview</p>
         </div>
-        <a class="btn btn-primary new-claim-btn" asp-controller="Claims" asp-action="Create">
+        <a class="btn btn-primary new-claim-btn" asp-controller="Lecturer" asp-action="Create">
             <i class="fas fa-plus-circle me-2"></i>New Claim
         </a>
     </div>
 </div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fas fa-check-circle me-2"></i>@TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="fas fa-exclamation-triangle me-2"></i>@TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
 
 <div class="stats-grid">
     <div class="stat-card pending">
@@ -131,12 +147,12 @@
                                 </td>
                                 <td>
                                     <div class="action-buttons">
-                                        <a asp-controller="Claims" asp-action="Details" asp-route-id="@claim.Id" class="btn-action view" title="View Details">
+                                        <a asp-controller="Lecturer" asp-action="Details" asp-route-id="@claim.Id" class="btn-action view" title="View Details">
                                             <i class="fas fa-eye"></i>
                                         </a>
                                         @if (claim.Status == "Pending")
                                         {
-                                            <a href="#" class="btn-action edit" title="Edit Claim">
+                                            <a asp-controller="Lecturer" asp-action="Edit" asp-route-id="@claim.Id" class="btn-action edit" title="Edit Claim">
                                                 <i class="fas fa-edit"></i>
                                             </a>
                                         }
@@ -156,7 +172,7 @@
                 </div>
                 <h4>No Claims Yet</h4>
                 <p class="text-muted">You haven't submitted any claims yet. Start by creating your first claim.</p>
-                <a class="btn btn-primary mt-3" asp-controller="Claims" asp-action="Create">
+                <a class="btn btn-primary mt-3" asp-controller="Lecturer" asp-action="Create">
                     <i class="fas fa-plus-circle me-2"></i>Create Your First Claim
                 </a>
             </div>
@@ -166,7 +182,6 @@
 
 @section Scripts {
     <style>
-        /* Your existing CSS styles remain the same */
         .dashboard-header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;

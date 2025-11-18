@@ -13,5 +13,6 @@
         public string PhoneNumber { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.Now;
         public bool IsActive { get; set; } = true;
+        public DateTime? LastLoginDate { get; set; }
     }
 }
