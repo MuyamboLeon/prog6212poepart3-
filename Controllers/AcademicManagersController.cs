@@ -270,5 +270,43 @@ namespace The_CMCS.Controllers
                 return null;
             }
         }
+        // NEW: Auto-approval page for managers
+        public IActionResult AutoApproval()
+        {
+            var currentUser = GetCurrentUser();
+            if (currentUser?.Role != "Manager")
+                return RedirectToAction("Login", "Home");
+
+            var claimsForAutoApproval = _claimsService.GetClaimsForAutoApproval();
+            return View(claimsForAutoApproval);
+        }
+
+        // NEW: Bulk auto-approval by manager
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult BulkManagerApprove(List<string> claimIds)
+        {
+            var currentUser = GetCurrentUser();
+            if (currentUser?.Role != "Manager")
+                return RedirectToAction("Login", "Home");
+
+            if (claimIds == null || !claimIds.Any())
+            {
+                TempData["ErrorMessage"] = "No claims selected for approval.";
+                return RedirectToAction("AutoApproval");
+            }
+
+            var result = _claimsService.AutoApproveByManager(claimIds, currentUser.Name);
+            if (result)
+            {
+                TempData["SuccessMessage"] = $"{claimIds.Count} claims approved successfully!";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Failed to approve some claims.";
+            }
+
+            return RedirectToAction("AutoApproval");
+        }
     }
 }

@@ -200,5 +200,79 @@ namespace The_CMCS.Controllers
 
             return null;
         }
+
+        // NEW: Auto-verification page
+        public IActionResult AutoVerification()
+        {
+            var currentUser = GetCurrentUser();
+            if (currentUser?.Role != "Coordinator")
+                return RedirectToAction("Login", "Home");
+
+            var claimsForVerification = _claimsService.GetClaimsForAutoVerification();
+
+            // Run policy checks on all claims
+            var claimsWithChecks = claimsForVerification.Select(claim =>
+            {
+                var (isValid, policyCheck) = _claimsService.VerifyClaimAgainstPolicies(claim);
+                return new { Claim = claim, IsValid = isValid, PolicyCheck = policyCheck };
+            }).ToList();
+
+            ViewBag.ClaimsWithChecks = claimsWithChecks;
+            return View(claimsForVerification);
+        }
+
+        // NEW: Bulk auto-approval
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult BulkAutoApprove(List<string> claimIds)
+        {
+            var currentUser = GetCurrentUser();
+            if (currentUser?.Role != "Coordinator")
+                return RedirectToAction("Login", "Home");
+
+            if (claimIds == null || !claimIds.Any())
+            {
+                TempData["ErrorMessage"] = "No claims selected for auto-approval.";
+                return RedirectToAction("AutoVerification");
+            }
+
+            var result = _claimsService.AutoApproveClaims(claimIds, currentUser.Name);
+            if (result)
+            {
+                TempData["SuccessMessage"] = $"{claimIds.Count} claims auto-approved successfully!";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Failed to auto-approve some claims.";
+            }
+
+            return RedirectToAction("AutoVerification");
+        }
+
+        // NEW: Policy verification for single claim
+        [HttpPost]
+        public JsonResult VerifyClaimPolicy(string claimId)
+        {
+            try
+            {
+                var claim = _claimsService.GetClaimById(claimId);
+                if (claim == null)
+                    return Json(new { success = false, error = "Claim not found" });
+
+                var (isValid, policyCheck) = _claimsService.VerifyClaimAgainstPolicies(claim);
+
+                return Json(new
+                {
+                    success = true,
+                    isValid = isValid,
+                    policyCheck = policyCheck,
+                    canAutoApprove = isValid
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, error = ex.Message });
+            }
+        }
     }
 }

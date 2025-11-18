@@ -214,13 +214,42 @@ namespace The_CMCS.Controllers
             return View(updatedClaim);
         }
 
-        private User GetCurrentUser()
+        private User? GetCurrentUser()
         {
             var username = User.FindFirst(ClaimTypes.Name)?.Value;
             if (!string.IsNullOrEmpty(username))
                 return _claimsService.GetUserByUsername(username);
 
             return null;
+        }
+
+        // NEW: Auto-calculation endpoint for real-time calculation
+        [HttpPost]
+        public JsonResult AutoCalculate(decimal hoursWorked, decimal hourlyRate)
+        {
+            try
+            {
+                var tempClaim = new Models.Claim
+                {
+                    HoursWorked = hoursWorked,
+                    HourlyRate = hourlyRate
+                };
+
+                var calculatedClaim = _claimsService.AutoCalculateClaim(tempClaim);
+                var (isValid, errors) = _claimsService.ValidateClaimSubmission(calculatedClaim);
+
+                return Json(new
+                {
+                    success = true,
+                    totalAmount = calculatedClaim.TotalAmount,
+                    isValid = isValid,
+                    validationMessage = isValid ? "All validations passed" : errors
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, error = ex.Message });
+            }
         }
     }
 }

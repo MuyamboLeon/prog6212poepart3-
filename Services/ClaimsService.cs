@@ -1,5 +1,6 @@
 ﻿using The_CMCS.Models;
 using System.Globalization;
+using System.Text.Json;
 
 namespace The_CMCS.Services
 {
@@ -9,10 +10,13 @@ namespace The_CMCS.Services
         private static List<User> _users = new List<User>();
         private static List<SupportingDocument> _documents = new List<SupportingDocument>();
         private static List<Report> _reports = new List<Report>();
+        private static List<ClaimValidationRule> _validationRules = new List<ClaimValidationRule>();
+        private static List<AutomatedReport> _automatedReports = new List<AutomatedReport>();
 
         static ClaimsService()
         {
             InitializeSampleData();
+            InitializeValidationRules();
         }
 
         private static void InitializeSampleData()
@@ -124,6 +128,7 @@ namespace The_CMCS.Services
                     Department = "Computer Science",
                     HoursWorked = 40,
                     HourlyRate = 320,
+                    TotalAmount = 40 * 320,
                     Description = "Lecture hours for January",
                     Status = "Approved",
                     SubmittedDate = DateTime.Now.AddDays(-30),
@@ -132,7 +137,9 @@ namespace The_CMCS.Services
                     CoordinatorApprovedDate = DateTime.Now.AddDays(-25),
                     ManagerApproved = true,
                     ManagerApprovedBy = "Ms. Manager",
-                    ManagerApprovedDate = DateTime.Now.AddDays(-20)
+                    ManagerApprovedDate = DateTime.Now.AddDays(-20),
+                    ReviewedBy = "Ms. Manager",
+                    ReviewedDate = DateTime.Now.AddDays(-20)
                 },
                 new Claim {
                     Id = "CLM-002",
@@ -142,6 +149,7 @@ namespace The_CMCS.Services
                     Department = "Mathematics",
                     HoursWorked = 35,
                     HourlyRate = 350,
+                    TotalAmount = 35 * 350,
                     Description = "Tutorial sessions",
                     Status = "Pending",
                     SubmittedDate = DateTime.Now.AddDays(-15),
@@ -158,6 +166,7 @@ namespace The_CMCS.Services
                     Department = "Engineering",
                     HoursWorked = 45,
                     HourlyRate = 380,
+                    TotalAmount = 45 * 380,
                     Description = "Laboratory supervision",
                     Status = "Pending",
                     SubmittedDate = DateTime.Now.AddDays(-5),
@@ -167,11 +176,325 @@ namespace The_CMCS.Services
             });
         }
 
-        // Claim Methods
+        private static void InitializeValidationRules()
+        {
+            _validationRules.Add(new ClaimValidationRule
+            {
+                Id = "rule1",
+                RuleName = "Maximum Hours",
+                Description = "Maximum 180 hours per month",
+                MaxHours = 180,
+                IsActive = true,
+                CreatedDate = DateTime.Now
+            });
+
+            _validationRules.Add(new ClaimValidationRule
+            {
+                Id = "rule2",
+                RuleName = "Hourly Rate Range",
+                Description = "Hourly rate must be between R0 and R1000",
+                MinHourlyRate = 0,
+                MaxHourlyRate = 1000,
+                IsActive = true,
+                CreatedDate = DateTime.Now
+            });
+        }
+
+        // ============ LECTURER AUTOMATION FEATURES ============
+
+        public Claim AutoCalculateClaim(Claim claim)
+        {
+            // Auto-calculate total amount
+            claim.TotalAmount = claim.HoursWorked * claim.HourlyRate;
+            claim.AutoCalculated = true;
+            return claim;
+        }
+
+        public (bool isValid, string errors) ValidateClaimSubmission(Claim claim)
+        {
+            var errors = new List<string>();
+            var rules = GetValidationRules().Where(r => r.IsActive).ToList();
+
+            foreach (var rule in rules)
+            {
+                if (claim.HoursWorked > rule.MaxHours)
+                {
+                    errors.Add($"Hours worked ({claim.HoursWorked}) exceeds maximum allowed ({rule.MaxHours})");
+                }
+
+                if (claim.HourlyRate < rule.MinHourlyRate || claim.HourlyRate > rule.MaxHourlyRate)
+                {
+                    errors.Add($"Hourly rate (R{claim.HourlyRate}) must be between R{rule.MinHourlyRate} and R{rule.MaxHourlyRate}");
+                }
+            }
+
+            // Additional validations
+            if (claim.HoursWorked <= 0)
+            {
+                errors.Add("Hours worked must be greater than 0");
+            }
+
+            if (claim.HourlyRate <= 0)
+            {
+                errors.Add("Hourly rate must be greater than 0");
+            }
+
+            claim.ValidationPassed = !errors.Any();
+            claim.ValidationErrors = string.Join("; ", errors);
+
+            return (!errors.Any(), string.Join("\n", errors));
+        }
+
+        // ============ COORDINATOR AUTOMATION FEATURES ============
+
+        public List<Claim> GetClaimsForAutoVerification()
+        {
+            return _claims.Where(c => c.Status == "Pending" && !c.CoordinatorApproved).ToList();
+        }
+
+        public (bool isValid, string policyCheck) VerifyClaimAgainstPolicies(Claim claim)
+        {
+            var policyChecks = new List<string>();
+            bool isValid = true;
+
+            // Check hours against policy
+            if (claim.HoursWorked > 180)
+            {
+                isValid = false;
+                policyChecks.Add("❌ Hours exceed maximum limit (180 hours)");
+            }
+            else
+            {
+                policyChecks.Add("✅ Hours within acceptable range");
+            }
+
+            // Check hourly rate against department standards
+            var user = GetUserById(claim.LecturerId);
+            if (user != null && claim.HourlyRate != user.HourlyRate)
+            {
+                isValid = false;
+                policyChecks.Add("❌ Hourly rate doesn't match HR records");
+            }
+            else
+            {
+                policyChecks.Add("✅ Hourly rate verified");
+            }
+
+            // Check for duplicate claims (same lecturer, same month)
+            var duplicateClaims = _claims.Any(c =>
+                c.LecturerId == claim.LecturerId &&
+                c.Month == claim.Month &&
+                c.Id != claim.Id &&
+                c.Status != "Rejected");
+
+            if (duplicateClaims)
+            {
+                isValid = false;
+                policyChecks.Add("❌ Duplicate claim for same month detected");
+            }
+            else
+            {
+                policyChecks.Add("✅ No duplicate claims found");
+            }
+
+            return (isValid, string.Join("\n", policyChecks));
+        }
+
+        public bool AutoApproveClaims(List<string> claimIds, string approvedBy)
+        {
+            try
+            {
+                foreach (var claimId in claimIds)
+                {
+                    var claim = GetClaimById(claimId);
+                    if (claim != null && claim.Status == "Pending" && !claim.CoordinatorApproved)
+                    {
+                        var (isValid, policyCheck) = VerifyClaimAgainstPolicies(claim);
+
+                        if (isValid)
+                        {
+                            claim.CoordinatorApproved = true;
+                            claim.CoordinatorApprovedBy = approvedBy;
+                            claim.CoordinatorApprovedDate = DateTime.Now;
+                        }
+                    }
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        // ============ MANAGER AUTOMATION FEATURES ============
+
+        public List<Claim> GetClaimsForAutoApproval()
+        {
+            return _claims.Where(c =>
+                c.Status == "Pending" &&
+                c.CoordinatorApproved &&
+                !c.ManagerApproved).ToList();
+        }
+
+        public bool AutoApproveByManager(List<string> claimIds, string approvedBy)
+        {
+            try
+            {
+                foreach (var claimId in claimIds)
+                {
+                    var claim = GetClaimById(claimId);
+                    if (claim != null && claim.Status == "Pending" && claim.CoordinatorApproved)
+                    {
+                        claim.ManagerApproved = true;
+                        claim.ManagerApprovedBy = approvedBy;
+                        claim.ManagerApprovedDate = DateTime.Now;
+                        claim.Status = "Approved";
+                        claim.ReviewedBy = approvedBy;
+                        claim.ReviewedDate = DateTime.Now;
+                    }
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        // ============ HR AUTOMATION FEATURES ============
+
+        public AutomatedReport GenerateAutomatedMonthlyReport(string month, int year)
+        {
+            var monthlyClaims = _claims.Where(c =>
+                c.Month.Equals(month, StringComparison.OrdinalIgnoreCase) &&
+                c.SubmittedDate.Year == year &&
+                c.Status == "Approved").ToList();
+
+            var reportData = new
+            {
+                Month = month,
+                Year = year,
+                TotalClaims = monthlyClaims.Count,
+                TotalAmount = monthlyClaims.Sum(c => c.TotalAmount),
+                ClaimsByDepartment = monthlyClaims.GroupBy(c => c.Department)
+                    .Select(g => new { Department = g.Key, Count = g.Count(), Amount = g.Sum(c => c.TotalAmount) }),
+                GeneratedDate = DateTime.Now
+            };
+
+            var report = new AutomatedReport
+            {
+                Id = Guid.NewGuid().ToString(),
+                ReportType = "Monthly",
+                Title = $"Monthly Report - {month} {year}",
+                Description = $"Claims summary for {month} {year}",
+                GeneratedBy = "HR System",
+                GeneratedDate = DateTime.Now,
+                Parameters = JsonSerializer.Serialize(new { Month = month, Year = year }),
+                ReportData = System.Text.Encoding.UTF8.GetBytes(JsonSerializer.Serialize(reportData))
+            };
+
+            _automatedReports.Add(report);
+            return report;
+        }
+
+        public AutomatedReport GenerateAutomatedDepartmentReport(string department)
+        {
+            var departmentClaims = _claims.Where(c =>
+                c.Department.Equals(department, StringComparison.OrdinalIgnoreCase) &&
+                c.Status == "Approved").ToList();
+
+            var reportData = new
+            {
+                Department = department,
+                TotalClaims = departmentClaims.Count,
+                TotalAmount = departmentClaims.Sum(c => c.TotalAmount),
+                ClaimsByMonth = departmentClaims.GroupBy(c => c.Month)
+                    .Select(g => new { Month = g.Key, Count = g.Count(), Amount = g.Sum(c => c.TotalAmount) }),
+                GeneratedDate = DateTime.Now
+            };
+
+            var report = new AutomatedReport
+            {
+                Id = Guid.NewGuid().ToString(),
+                ReportType = "Department",
+                Title = $"Department Report - {department}",
+                Description = $"Claims summary for {department} department",
+                GeneratedBy = "HR System",
+                GeneratedDate = DateTime.Now,
+                Parameters = JsonSerializer.Serialize(new { Department = department }),
+                ReportData = System.Text.Encoding.UTF8.GetBytes(JsonSerializer.Serialize(reportData))
+            };
+
+            _automatedReports.Add(report);
+            return report;
+        }
+
+        public byte[] GenerateBulkInvoicesPdf(List<string> claimIds)
+        {
+            var invoicesContent = new List<string>();
+
+            foreach (var claimId in claimIds)
+            {
+                var claim = GetClaimById(claimId);
+                if (claim != null && claim.Status == "Approved")
+                {
+                    var invoice = GenerateInvoicePdf(claim);
+                    invoicesContent.Add($"--- Invoice for Claim {claim.Id} ---");
+                    invoicesContent.Add(System.Text.Encoding.UTF8.GetString(invoice));
+                    invoicesContent.Add("");
+                }
+            }
+
+            return System.Text.Encoding.UTF8.GetBytes(string.Join(Environment.NewLine, invoicesContent));
+        }
+
+        public List<AutomatedReport> GetGeneratedReports()
+        {
+            return _automatedReports.OrderByDescending(r => r.GeneratedDate).ToList();
+        }
+
+        public AutomatedReport GetReportById(string id)
+        {
+            return _automatedReports.FirstOrDefault(r => r.Id == id) ?? new AutomatedReport();
+        }
+
+        // ============ VALIDATION RULES MANAGEMENT ============
+
+        public List<ClaimValidationRule> GetValidationRules()
+        {
+            return _validationRules;
+        }
+
+        public bool UpdateValidationRule(ClaimValidationRule rule)
+        {
+            var existingRule = _validationRules.FirstOrDefault(r => r.Id == rule.Id);
+            if (existingRule != null)
+            {
+                _validationRules.Remove(existingRule);
+                _validationRules.Add(rule);
+                return true;
+            }
+            return false;
+        }
+
+        // ============ EXISTING CLAIM METHODS ============
+
         public List<Claim> GetAllClaims() => _claims.OrderByDescending(c => c.SubmittedDate).ToList();
 
         public List<Claim> GetClaimsByUser(string userId) =>
             _claims.Where(c => c.LecturerId == userId).OrderByDescending(c => c.SubmittedDate).ToList();
+
+        public List<Claim> GetClaimsByDepartment(string department)
+        {
+            if (department == "All")
+                return _claims.OrderByDescending(c => c.SubmittedDate).ToList();
+
+            return _claims.Where(c => c.Department == department).OrderByDescending(c => c.SubmittedDate).ToList();
+        }
+
+        public Claim GetClaimById(string claimId) =>
+            _claims.FirstOrDefault(c => c.Id == claimId) ?? new Claim();
 
         public List<Claim> GetPendingClaims()
         {
@@ -190,17 +513,6 @@ namespace The_CMCS.Services
             // Default: return all pending claims
             return _claims.Where(c => c.Status == "Pending").OrderByDescending(c => c.SubmittedDate).ToList();
         }
-
-        public List<Claim> GetClaimsByDepartment(string department)
-        {
-            if (department == "All")
-                return _claims.OrderByDescending(c => c.SubmittedDate).ToList();
-
-            return _claims.Where(c => c.Department == department).OrderByDescending(c => c.SubmittedDate).ToList();
-        }
-
-        public Claim? GetClaimById(string claimId) =>
-            _claims.FirstOrDefault(c => c.Id == claimId);
 
         public bool AddClaim(Claim claim)
         {
@@ -228,18 +540,6 @@ namespace The_CMCS.Services
             {
                 return false;
             }
-        }
-
-        public bool UpdateClaim(string claimId, Claim updatedClaim)
-        {
-            var existingClaim = _claims.FirstOrDefault(c => c.Id == claimId);
-            if (existingClaim != null)
-            {
-                _claims.Remove(existingClaim);
-                _claims.Add(updatedClaim);
-                return true;
-            }
-            return false;
         }
 
         public bool UpdateClaim(Claim existingClaim)
@@ -280,7 +580,8 @@ namespace The_CMCS.Services
             return false;
         }
 
-        // Approval Workflow Methods
+        // ============ APPROVAL WORKFLOW METHODS ============
+
         public bool ApproveClaim(string claimId, string reviewedBy)
         {
             var claim = GetClaimById(claimId);
@@ -390,14 +691,15 @@ namespace The_CMCS.Services
                 .ToList();
         }
 
-        // User Management Methods
+        // ============ USER MANAGEMENT METHODS ============
+
         public List<User> GetAllUsers() => _users;
 
-        public User? GetUserByUsername(string username) =>
-            _users.FirstOrDefault(u => u.Username == username);
+        public User GetUserByUsername(string username) =>
+            _users.FirstOrDefault(u => u.Username == username) ?? new User();
 
-        public User? GetUserById(string userId) =>
-            _users.FirstOrDefault(u => u.Id == userId);
+        public User GetUserById(string userId) =>
+            _users.FirstOrDefault(u => u.Id == userId) ?? new User();
 
         public bool AddUser(User user)
         {
@@ -460,12 +762,13 @@ namespace The_CMCS.Services
             return false;
         }
 
-        // Document Methods
+        // ============ DOCUMENT METHODS ============
+
         public List<SupportingDocument> GetDocumentsByClaimId(string claimId) =>
             _documents.Where(d => d.ClaimId == claimId).ToList();
 
-        public SupportingDocument? GetDocumentById(string documentId) =>
-            _documents.FirstOrDefault(d => d.Id == documentId);
+        public SupportingDocument GetDocumentById(string documentId) =>
+            _documents.FirstOrDefault(d => d.Id == documentId) ?? new SupportingDocument();
 
         public bool AddDocument(SupportingDocument document)
         {
@@ -473,7 +776,8 @@ namespace The_CMCS.Services
             return true;
         }
 
-        // Enhanced Claim Creation with Auto-calculation and Validation
+        // ============ ENHANCED CLAIM CREATION WITH AUTOMATION ============
+
         public bool CreateClaim(Claim claim, List<IFormFile> supportingDocuments)
         {
             try
@@ -488,6 +792,15 @@ namespace The_CMCS.Services
                 claim.Department = lecturer.Department;
                 claim.HourlyRate = lecturer.HourlyRate;
 
+                // AUTOMATION: Auto-calculate and validate
+                claim = AutoCalculateClaim(claim);
+                var (isValid, validationErrors) = ValidateClaimSubmission(claim);
+
+                if (!isValid)
+                {
+                    throw new InvalidOperationException($"Validation failed: {validationErrors}");
+                }
+
                 // Validation: Maximum hours per month (180 hours)
                 if (claim.HoursWorked > 180)
                 {
@@ -499,9 +812,6 @@ namespace The_CMCS.Services
                 {
                     throw new InvalidOperationException("Hours worked must be greater than zero.");
                 }
-
-                // Auto-calculation of total amount
-                claim.TotalAmount = claim.HoursWorked * claim.HourlyRate;
 
                 // Generate unique ID for the claim
                 if (string.IsNullOrEmpty(claim.Id))
@@ -565,7 +875,8 @@ namespace The_CMCS.Services
             }
         }
 
-        // Report Generation Methods
+        // ============ REPORT GENERATION METHODS ============
+
         public List<Report> GenerateMonthlyReport(string month, int year)
         {
             var claims = _claims.Where(c =>
@@ -667,12 +978,13 @@ Thank you for using CMCS
             return System.Text.Encoding.UTF8.GetBytes(invoiceContent);
         }
 
-        public List<Report> GetGeneratedReports()
+        public List<Report> GetReports()
         {
             return _reports.OrderByDescending(r => r.GeneratedDate).ToList();
         }
 
-        // Bulk Operations for HR
+        // ============ BULK OPERATIONS FOR HR ============
+
         public List<byte[]> GenerateBulkInvoices(List<string> claimIds)
         {
             var invoices = new List<byte[]>();
@@ -687,7 +999,8 @@ Thank you for using CMCS
             return invoices;
         }
 
-        // System Analytics for HR Dashboard
+        // ============ SYSTEM ANALYTICS FOR HR DASHBOARD ============
+
         public Dictionary<string, object> GetSystemOverview()
         {
             var allClaims = GetAllClaims();
@@ -714,7 +1027,8 @@ Thank you for using CMCS
             };
         }
 
-        // Helper method for current user (to be implemented with proper authentication)
+        // ============ HELPER METHODS ============
+
         private User? GetCurrentUser()
         {
             // This should be implemented based on your authentication system

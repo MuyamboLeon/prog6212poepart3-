@@ -406,5 +406,63 @@ namespace The_CMCS.Controllers
                 return null;
             }
         }
+
+            // NEW: Automated Reports Management
+public IActionResult AutomatedReports()
+        {
+            var currentUser = GetCurrentUser();
+            if (currentUser?.Role != "HR")
+                return RedirectToAction("Login", "Home");
+
+            var reports = _claimsService.GetGeneratedReports();
+            return View(reports);
+        }
+
+        // NEW: Validation Rules Management
+        public IActionResult ValidationRules()
+        {
+            var currentUser = GetCurrentUser();
+            if (currentUser?.Role != "HR")
+                return RedirectToAction("Login", "Home");
+
+            var rules = _claimsService.GetValidationRules();
+            return View(rules);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult UpdateValidationRule(ClaimValidationRule rule)
+        {
+            var currentUser = GetCurrentUser();
+            if (currentUser?.Role != "HR")
+                return RedirectToAction("Login", "Home");
+
+            var result = _claimsService.UpdateValidationRule(rule);
+            if (result)
+            {
+                TempData["SuccessMessage"] = "Validation rule updated successfully!";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Failed to update validation rule.";
+            }
+
+            return RedirectToAction("ValidationRules");
+        }
+
+        // NEW: Download generated report
+        public IActionResult DownloadReport(string reportId)
+        {
+            var currentUser = GetCurrentUser();
+            if (currentUser?.Role != "HR")
+                return RedirectToAction("Login", "Home");
+
+            var report = _claimsService.GetReportById(reportId);
+            if (report == null)
+                return NotFound();
+
+            var fileName = $"{report.Title}_{report.GeneratedDate:yyyyMMddHHmmss}.json";
+            return File(report.ReportData, "application/json", fileName);
+        }
     }
-}
+    }

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "/wA6tcXu7Fw=",
+  "dgSpecHash": "B9K7RDQ8JsA=",
   "success": true,
-  "projectFilePath": "C:\\Users\\lab_services_student\\OneDrive - ADvTECH Ltd\\Desktop\\The CMCS\\progPart2\\The CMCS\\The CMCS.csproj",
+  "projectFilePath": "C:\\Users\\lab_services_student\\OneDrive - ADvTECH Ltd\\Desktop\\CMCS poe part\\prog6212poepart3-\\The CMCS.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\lab_services_student\\.nuget\\packages\\humanizer\\2.14.1\\humanizer.2.14.1.nupkg.sha512",
     "C:\\Users\\lab_services_student\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",

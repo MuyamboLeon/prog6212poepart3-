@@ -35,7 +35,7 @@ namespace The_CMCS.Services
         bool RejectByManager(string claimId, string rejectedBy, string rejectionReason);
         List<Claim> GetClaimsPendingManagerReview();
 
-        // Report methods
+        // Report methods (Legacy - for backward compatibility)
         List<Report> GenerateMonthlyReport(string month, int year);
         List<Report> GenerateDepartmentReport(string department);
         byte[] GenerateInvoicePdf(Claim claim);
@@ -44,5 +44,36 @@ namespace The_CMCS.Services
         bool ApproveClaim(string claimId, string approvedBy);
         bool RejectClaim(string claimId, string rejectedBy, string rejectionReason);
         bool CreateClaim(Claim claim, List<IFormFile> supportingDocuments);
+
+        // Automation methods for Lecturer
+        Claim AutoCalculateClaim(Claim claim);
+        (bool isValid, string errors) ValidateClaimSubmission(Claim claim);
+
+        // Automation methods for Coordinator
+        List<Claim> GetClaimsForAutoVerification();
+        (bool isValid, string policyCheck) VerifyClaimAgainstPolicies(Claim claim);
+        bool AutoApproveClaims(List<string> claimIds, string approvedBy);
+
+        // Automation methods for Manager
+        List<Claim> GetClaimsForAutoApproval();
+        bool AutoApproveByManager(List<string> claimIds, string approvedBy);
+
+        // Automation methods for HR (Renamed to avoid conflicts)
+        AutomatedReport GenerateAutomatedMonthlyReport(string month, int year);
+        AutomatedReport GenerateAutomatedDepartmentReport(string department);
+        byte[] GenerateBulkInvoicesPdf(List<string> claimIds);
+
+        // Validation Rules Management
+        List<ClaimValidationRule> GetValidationRules();
+        bool UpdateValidationRule(ClaimValidationRule rule);
+
+        // Report Management
+        List<AutomatedReport> GetGeneratedReports();
+        AutomatedReport GetReportById(string id);
+
+        // Additional utility methods
+        List<byte[]> GenerateBulkInvoices(List<string> claimIds);
+        Dictionary<string, object> GetSystemOverview();
+        List<Report> GetReports();
     }
 }

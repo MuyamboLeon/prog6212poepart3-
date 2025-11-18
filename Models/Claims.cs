@@ -27,7 +27,8 @@ namespace The_CMCS.Models
         [Range(0.1, double.MaxValue, ErrorMessage = "Hourly rate must be greater than 0")]
         public decimal HourlyRate { get; set; }
 
-        public decimal TotalAmount => HoursWorked * HourlyRate;
+        // Make TotalAmount settable for automation
+        public decimal TotalAmount { get; set; }
 
         public string Description { get; set; }
 
@@ -49,6 +50,10 @@ namespace The_CMCS.Models
         public bool ManagerApproved { get; set; }
         public string ManagerApprovedBy { get; set; }
         public DateTime? ManagerApprovedDate { get; set; }
+
+        // Review tracking
+        public string ReviewedBy { get; set; }
+        public DateTime? ReviewedDate { get; set; }
 
         public string RejectionReason { get; set; }
 
