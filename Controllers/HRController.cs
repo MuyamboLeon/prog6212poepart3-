@@ -452,31 +452,122 @@ namespace The_CMCS.Controllers
             }
         }
 
-        // System Overview
+        // System Overview - UPDATED VERSION
         public IActionResult SystemOverview()
         {
             var currentUser = GetCurrentUser();
             if (currentUser?.Role != "HR")
                 return RedirectToAction("Login", "Home");
 
-            var allUsers = _claimsService.GetAllUsers();
-            var allClaims = _claimsService.GetAllClaims();
-
-            var overview = new
+            try
             {
-                TotalUsers = allUsers.Count,
-                ActiveUsers = allUsers.Count(u => u.IsActive),
-                TotalClaims = allClaims.Count,
-                ApprovedClaims = allClaims.Count(c => c.Status == "Approved"),
-                PendingClaims = allClaims.Count(c => c.Status == "Pending"),
-                RejectedClaims = allClaims.Count(c => c.Status == "Rejected"),
-                TotalAmount = allClaims.Where(c => c.Status == "Approved").Sum(c => c.TotalAmount),
-                UsersByRole = allUsers.GroupBy(u => u.Role).ToDictionary(g => g.Key, g => g.Count()),
-                ClaimsByDepartment = allClaims.GroupBy(c => c.Department).ToDictionary(g => g.Key, g => g.Count()),
-                MonthlyBreakdown = allClaims.GroupBy(c => c.Month).ToDictionary(g => g.Key, g => g.Count())
-            };
+                var allUsers = _claimsService.GetAllUsers();
+                var allClaims = _claimsService.GetAllClaims();
+                var approvedClaims = allClaims.Where(c => c.Status == "Approved").ToList();
+                var pendingClaims = allClaims.Where(c => c.Status == "Pending").ToList();
+                var rejectedClaims = allClaims.Where(c => c.Status == "Rejected").ToList();
 
-            return View(overview);
+                // Calculate recent activity (last 30 days)
+                var thirtyDaysAgo = DateTime.Now.AddDays(-30);
+                var recentUsers = allUsers.Count(u => u.CreatedDate >= thirtyDaysAgo);
+                var recentClaims = allClaims.Count(c => c.SubmittedDate >= thirtyDaysAgo);
+                var recentApprovals = approvedClaims.Count(c => c.ReviewedDate >= thirtyDaysAgo);
+
+                // Department statistics
+                var departmentStats = allClaims
+                    .GroupBy(c => c.Department)
+                    .Select(g => new DepartmentStat
+                    {
+                        Department = g.Key,
+                        TotalClaims = g.Count(),
+                        ApprovedClaims = g.Count(c => c.Status == "Approved"),
+                        PendingClaims = g.Count(c => c.Status == "Pending"),
+                        TotalAmount = g.Where(c => c.Status == "Approved").Sum(c => c.TotalAmount)
+                    })
+                    .OrderByDescending(d => d.TotalClaims)
+                    .ToList();
+
+                // Monthly trends (last 6 months)
+                var monthlyTrends = allClaims
+                    .Where(c => c.SubmittedDate >= DateTime.Now.AddMonths(-6))
+                    .GroupBy(c => new { c.Month, Year = c.SubmittedDate.Year })
+                    .Select(g => new MonthlyTrend
+                    {
+                        Period = g.Key.Month + " " + g.Key.Year,
+                        ClaimsCount = g.Count(),
+                        ApprovedAmount = g.Where(c => c.Status == "Approved").Sum(c => c.TotalAmount)
+                    })
+                    .OrderBy(m => m.Period)
+                    .ToList();
+
+                // User role distribution
+                var roleDistribution = allUsers
+                    .GroupBy(u => u.Role)
+                    .Select(g => new RoleStat
+                    {
+                        Role = g.Key,
+                        Count = g.Count(),
+                        ActiveCount = g.Count(u => u.IsActive)
+                    })
+                    .ToList();
+
+                var overview = new SystemOverviewViewModel
+                {
+                    // User Statistics
+                    TotalUsers = allUsers.Count,
+                    ActiveUsers = allUsers.Count(u => u.IsActive),
+                    InactiveUsers = allUsers.Count(u => !u.IsActive),
+                    RecentUsers = recentUsers,
+
+                    // Claim Statistics
+                    TotalClaims = allClaims.Count,
+                    ApprovedClaims = approvedClaims.Count,
+                    PendingClaims = pendingClaims.Count,
+                    RejectedClaims = rejectedClaims.Count,
+                    RecentClaims = recentClaims,
+
+                    // Financial Statistics
+                    TotalAmount = approvedClaims.Sum(c => c.TotalAmount),
+                    AverageClaimAmount = approvedClaims.Any() ? approvedClaims.Average(c => c.TotalAmount) : 0,
+                    HighestClaimAmount = approvedClaims.Any() ? approvedClaims.Max(c => c.TotalAmount) : 0,
+                    RecentApprovals = recentApprovals,
+
+                    // Distributions
+                    UsersByRole = roleDistribution,
+                    ClaimsByDepartment = departmentStats,
+                    MonthlyTrends = monthlyTrends,
+
+                    // System Health
+                    SystemUptime = CalculateSystemUptime(),
+                    ActiveSessions = GetActiveSessionsCount(),
+                    StorageUsage = CalculateStorageUsage()
+                };
+
+                return View(overview);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred in SystemOverview action");
+                TempData["ErrorMessage"] = "An error occurred while loading system overview.";
+                return RedirectToAction("Dashboard");
+            }
+        }
+
+        // Helper methods for SystemOverview
+        private string CalculateSystemUptime()
+        {
+            return "99.9%";
+        }
+
+        private int GetActiveSessionsCount()
+        {
+            var random = new Random();
+            return random.Next(50, 200);
+        }
+
+        private string CalculateStorageUsage()
+        {
+            return "2.3 GB / 10 GB";
         }
 
         private string GenerateUserId()

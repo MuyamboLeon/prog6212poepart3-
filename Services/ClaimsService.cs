@@ -25,95 +25,25 @@ namespace The_CMCS.Services
             _users.AddRange(new List<User>
             {
                 new User {
-                    Id = "hr1",
-                    Username = "hr",
-                    Password = "password",
-                    Name = "HR Manager",
-                    Role = "HR",
-                    Department = "Human Resources",
-                    Email = "hr@university.ac.za",
-                    PhoneNumber = "+27 11 123 4567",
-                    HourlyRate = 0,
-                    CreatedDate = DateTime.Now,
-                    IsActive = true
+                   
                 },
                 new User {
-                    Id = "lecturer1",
-                    Username = "Mr.Leon",
-                    Password = "password",
-                    Name = "Dr. Leon",
-                    Role = "Lecturer",
-                    Department = "Computer Science",
-                    Email = "leon@university.ac.za",
-                    PhoneNumber = "+27 11 123 4568",
-                    HourlyRate = 320,
-                    CreatedDate = DateTime.Now,
-                    IsActive = true
+                   
                 },
                 new User {
-                    Id = "lecturer2",
-                    Username = "Ms Lerato",
-                    Password = "password",
-                    Name = "Prof. Lerato",
-                    Role = "Lecturer",
-                    Department = "Mathematics",
-                    Email = "lerato@university.ac.za",
-                    PhoneNumber = "+27 11 123 4569",
-                    HourlyRate = 350,
-                    CreatedDate = DateTime.Now,
-                    IsActive = true
+                  
                 },
                 new User {
-                    Id = "lecturer3",
-                    Username = "Thato Mollo",
-                    Password = "password",
-                    Name = "Dr. Thato Mollo",
-                    Role = "Lecturer",
-                    Department = "Engineering",
-                    Email = "thato@university.ac.za",
-                    PhoneNumber = "+27 11 123 4570",
-                    HourlyRate = 380,
-                    CreatedDate = DateTime.Now,
-                    IsActive = true
+                  
                 },
                 new User {
-                    Id = "coordinator1",
-                    Username = "coordinator",
-                    Password = "password",
-                    Name = "Mr. Coordinator",
-                    Role = "Coordinator",
-                    Department = "Computer Science",
-                    Email = "coordinator@university.ac.za",
-                    PhoneNumber = "+27 11 123 4571",
-                    HourlyRate = 0,
-                    CreatedDate = DateTime.Now,
-                    IsActive = true
+                
                 },
                 new User {
-                    Id = "coordinator2",
-                    Username = "math.coordinator",
-                    Password = "password",
-                    Name = "Ms. Mathematics Coordinator",
-                    Role = "Coordinator",
-                    Department = "Mathematics",
-                    Email = "math.coordinator@university.ac.za",
-                    PhoneNumber = "+27 11 123 4572",
-                    HourlyRate = 0,
-                    CreatedDate = DateTime.Now,
-                    IsActive = true
+                 
                 },
                 new User {
-                    Id = "manager1",
-                    Username = "manager",
-                    Password = "password",
-                    Name = "Ms. Manager",
-                    Role = "Manager",
-                    Department = "All",
-                    Email = "manager@university.ac.za",
-                    PhoneNumber = "+27 11 123 4573",
-                    HourlyRate = 0,
-                    CreatedDate = DateTime.Now,
-                    IsActive = true
+                
                 }
             });
 
@@ -121,57 +51,13 @@ namespace The_CMCS.Services
             _claims.AddRange(new List<Claim>
             {
                 new Claim {
-                    Id = "CLM-001",
-                    LecturerId = "lecturer1",
-                    LecturerName = "Dr. Leon",
-                    Month = "January",
-                    Department = "Computer Science",
-                    HoursWorked = 40,
-                    HourlyRate = 320,
-                    TotalAmount = 40 * 320,
-                    Description = "Lecture hours for January",
-                    Status = "Approved",
-                    SubmittedDate = DateTime.Now.AddDays(-30),
-                    CoordinatorApproved = true,
-                    CoordinatorApprovedBy = "Mr. Coordinator",
-                    CoordinatorApprovedDate = DateTime.Now.AddDays(-25),
-                    ManagerApproved = true,
-                    ManagerApprovedBy = "Ms. Manager",
-                    ManagerApprovedDate = DateTime.Now.AddDays(-20),
-                    ReviewedBy = "Ms. Manager",
-                    ReviewedDate = DateTime.Now.AddDays(-20)
+                   
                 },
                 new Claim {
-                    Id = "CLM-002",
-                    LecturerId = "lecturer2",
-                    LecturerName = "Prof. Lerato",
-                    Month = "January",
-                    Department = "Mathematics",
-                    HoursWorked = 35,
-                    HourlyRate = 350,
-                    TotalAmount = 35 * 350,
-                    Description = "Tutorial sessions",
-                    Status = "Pending",
-                    SubmittedDate = DateTime.Now.AddDays(-15),
-                    CoordinatorApproved = true,
-                    CoordinatorApprovedBy = "Ms. Mathematics Coordinator",
-                    CoordinatorApprovedDate = DateTime.Now.AddDays(-10),
-                    ManagerApproved = false
+                   
                 },
                 new Claim {
-                    Id = "CLM-003",
-                    LecturerId = "lecturer3",
-                    LecturerName = "Dr. Thato Mollo",
-                    Month = "February",
-                    Department = "Engineering",
-                    HoursWorked = 45,
-                    HourlyRate = 380,
-                    TotalAmount = 45 * 380,
-                    Description = "Laboratory supervision",
-                    Status = "Pending",
-                    SubmittedDate = DateTime.Now.AddDays(-5),
-                    CoordinatorApproved = false,
-                    ManagerApproved = false
+                 
                 }
             });
         }

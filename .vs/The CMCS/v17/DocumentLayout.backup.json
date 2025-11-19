@@ -3,16 +3,44 @@
   "WorkspaceRootPath": "C:\\Users\\lab_services_student\\OneDrive - ADvTECH Ltd\\Desktop\\CMCS poe part\\prog6212poepart3-\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{DCA06F97-F783-7928-9348-3D0F8E9A7CA7}|The CMCS.csproj|c:\\users\\lab_services_student\\onedrive - advtech ltd\\desktop\\cmcs poe part\\prog6212poepart3-\\views\\hr\\createuser.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{DCA06F97-F783-7928-9348-3D0F8E9A7CA7}|The CMCS.csproj|solutionrelative:views\\hr\\createuser.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{DCA06F97-F783-7928-9348-3D0F8E9A7CA7}|The CMCS.csproj|c:\\users\\lab_services_student\\onedrive - advtech ltd\\desktop\\cmcs poe part\\prog6212poepart3-\\services\\claimsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DCA06F97-F783-7928-9348-3D0F8E9A7CA7}|The CMCS.csproj|solutionrelative:services\\claimsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{DCA06F97-F783-7928-9348-3D0F8E9A7CA7}|The CMCS.csproj|c:\\users\\lab_services_student\\onedrive - advtech ltd\\desktop\\cmcs poe part\\prog6212poepart3-\\controllers\\hrcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{DCA06F97-F783-7928-9348-3D0F8E9A7CA7}|The CMCS.csproj|solutionrelative:controllers\\hrcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{DCA06F97-F783-7928-9348-3D0F8E9A7CA7}|The CMCS.csproj|c:\\users\\lab_services_student\\onedrive - advtech ltd\\desktop\\cmcs poe part\\prog6212poepart3-\\views\\hr\\systemoverview.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{DCA06F97-F783-7928-9348-3D0F8E9A7CA7}|The CMCS.csproj|solutionrelative:views\\hr\\systemoverview.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DCA06F97-F783-7928-9348-3D0F8E9A7CA7}|The CMCS.csproj|c:\\users\\lab_services_student\\onedrive - advtech ltd\\desktop\\cmcs poe part\\prog6212poepart3-\\models\\systemoverviewviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DCA06F97-F783-7928-9348-3D0F8E9A7CA7}|The CMCS.csproj|solutionrelative:models\\systemoverviewviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DCA06F97-F783-7928-9348-3D0F8E9A7CA7}|The CMCS.csproj|c:\\users\\lab_services_student\\onedrive - advtech ltd\\desktop\\cmcs poe part\\prog6212poepart3-\\controllers\\programmecordinatorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DCA06F97-F783-7928-9348-3D0F8E9A7CA7}|The CMCS.csproj|solutionrelative:controllers\\programmecordinatorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DCA06F97-F783-7928-9348-3D0F8E9A7CA7}|The CMCS.csproj|c:\\users\\lab_services_student\\onedrive - advtech ltd\\desktop\\cmcs poe part\\prog6212poepart3-\\controllers\\lecturercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DCA06F97-F783-7928-9348-3D0F8E9A7CA7}|The CMCS.csproj|solutionrelative:controllers\\lecturercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DCA06F97-F783-7928-9348-3D0F8E9A7CA7}|The CMCS.csproj|c:\\users\\lab_services_student\\onedrive - advtech ltd\\desktop\\cmcs poe part\\prog6212poepart3-\\controllers\\academicmanagerscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DCA06F97-F783-7928-9348-3D0F8E9A7CA7}|The CMCS.csproj|solutionrelative:controllers\\academicmanagerscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DCA06F97-F783-7928-9348-3D0F8E9A7CA7}|The CMCS.csproj|c:\\users\\lab_services_student\\onedrive - advtech ltd\\desktop\\cmcs poe part\\prog6212poepart3-\\views\\lecturer\\dashboard.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{DCA06F97-F783-7928-9348-3D0F8E9A7CA7}|The CMCS.csproj|solutionrelative:views\\lecturer\\dashboard.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{DCA06F97-F783-7928-9348-3D0F8E9A7CA7}|The CMCS.csproj|c:\\users\\lab_services_student\\onedrive - advtech ltd\\desktop\\cmcs poe part\\prog6212poepart3-\\views\\lecturer\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{DCA06F97-F783-7928-9348-3D0F8E9A7CA7}|The CMCS.csproj|solutionrelative:views\\lecturer\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DCA06F97-F783-7928-9348-3D0F8E9A7CA7}|The CMCS.csproj|c:\\users\\lab_services_student\\onedrive - advtech ltd\\desktop\\cmcs poe part\\prog6212poepart3-\\views\\hr\\createuser.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{DCA06F97-F783-7928-9348-3D0F8E9A7CA7}|The CMCS.csproj|solutionrelative:views\\hr\\createuser.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{DCA06F97-F783-7928-9348-3D0F8E9A7CA7}|The CMCS.csproj|c:\\users\\lab_services_student\\onedrive - advtech ltd\\desktop\\cmcs poe part\\prog6212poepart3-\\services\\iclaimsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -27,24 +55,8 @@
       "RelativeMoniker": "D:0:0:{DCA06F97-F783-7928-9348-3D0F8E9A7CA7}|The CMCS.csproj|solutionrelative:views\\lecturer\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{DCA06F97-F783-7928-9348-3D0F8E9A7CA7}|The CMCS.csproj|c:\\users\\lab_services_student\\onedrive - advtech ltd\\desktop\\cmcs poe part\\prog6212poepart3-\\controllers\\lecturercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{DCA06F97-F783-7928-9348-3D0F8E9A7CA7}|The CMCS.csproj|solutionrelative:controllers\\lecturercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{DCA06F97-F783-7928-9348-3D0F8E9A7CA7}|The CMCS.csproj|c:\\users\\lab_services_student\\onedrive - advtech ltd\\desktop\\cmcs poe part\\prog6212poepart3-\\views\\lecturer\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{DCA06F97-F783-7928-9348-3D0F8E9A7CA7}|The CMCS.csproj|solutionrelative:views\\lecturer\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{DCA06F97-F783-7928-9348-3D0F8E9A7CA7}|The CMCS.csproj|c:\\users\\lab_services_student\\onedrive - advtech ltd\\desktop\\cmcs poe part\\prog6212poepart3-\\views\\lecturer\\dashboard.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{DCA06F97-F783-7928-9348-3D0F8E9A7CA7}|The CMCS.csproj|solutionrelative:views\\lecturer\\dashboard.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{DCA06F97-F783-7928-9348-3D0F8E9A7CA7}|The CMCS.csproj|c:\\users\\lab_services_student\\onedrive - advtech ltd\\desktop\\cmcs poe part\\prog6212poepart3-\\controllers\\programmecordinatorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{DCA06F97-F783-7928-9348-3D0F8E9A7CA7}|The CMCS.csproj|solutionrelative:controllers\\programmecordinatorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{DCA06F97-F783-7928-9348-3D0F8E9A7CA7}|The CMCS.csproj|c:\\users\\lab_services_student\\onedrive - advtech ltd\\desktop\\cmcs poe part\\prog6212poepart3-\\controllers\\academicmanagerscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{DCA06F97-F783-7928-9348-3D0F8E9A7CA7}|The CMCS.csproj|solutionrelative:controllers\\academicmanagerscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{DCA06F97-F783-7928-9348-3D0F8E9A7CA7}|The CMCS.csproj|c:\\users\\lab_services_student\\onedrive - advtech ltd\\desktop\\cmcs poe part\\prog6212poepart3-\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
@@ -53,10 +65,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{DCA06F97-F783-7928-9348-3D0F8E9A7CA7}|The CMCS.csproj|c:\\users\\lab_services_student\\onedrive - advtech ltd\\desktop\\cmcs poe part\\prog6212poepart3-\\views\\hr\\edituser.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{DCA06F97-F783-7928-9348-3D0F8E9A7CA7}|The CMCS.csproj|solutionrelative:views\\hr\\edituser.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{DCA06F97-F783-7928-9348-3D0F8E9A7CA7}|The CMCS.csproj|c:\\users\\lab_services_student\\onedrive - advtech ltd\\desktop\\cmcs poe part\\prog6212poepart3-\\services\\claimsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{DCA06F97-F783-7928-9348-3D0F8E9A7CA7}|The CMCS.csproj|solutionrelative:services\\claimsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{DCA06F97-F783-7928-9348-3D0F8E9A7CA7}|The CMCS.csproj|c:\\users\\lab_services_student\\onedrive - advtech ltd\\desktop\\cmcs poe part\\prog6212poepart3-\\models\\supportingdocument.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -74,11 +82,37 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 17,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 2,
+              "Title": "SystemOverview.cshtml",
+              "DocumentMoniker": "C:\\Users\\lab_services_student\\OneDrive - ADvTECH Ltd\\Desktop\\CMCS poe part\\prog6212poepart3-\\Views\\HR\\SystemOverview.cshtml",
+              "RelativeDocumentMoniker": "Views\\HR\\SystemOverview.cshtml",
+              "ToolTip": "C:\\Users\\lab_services_student\\OneDrive - ADvTECH Ltd\\Desktop\\CMCS poe part\\prog6212poepart3-\\Views\\HR\\SystemOverview.cshtml",
+              "RelativeToolTip": "Views\\HR\\SystemOverview.cshtml",
+              "ViewState": "AgIAACcCAAAAAAAAAAAUwFkCAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-19T13:41:20.426Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "SystemOverviewViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\lab_services_student\\OneDrive - ADvTECH Ltd\\Desktop\\CMCS poe part\\prog6212poepart3-\\Models\\SystemOverviewViewModel.cs",
+              "RelativeDocumentMoniker": "Models\\SystemOverviewViewModel.cs",
+              "ToolTip": "C:\\Users\\lab_services_student\\OneDrive - ADvTECH Ltd\\Desktop\\CMCS poe part\\prog6212poepart3-\\Models\\SystemOverviewViewModel.cs",
+              "RelativeToolTip": "Models\\SystemOverviewViewModel.cs",
+              "ViewState": "AgIAABcAAAAAAAAAAAAzwDsAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-19T13:40:05.582Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
               "Title": "User.cs",
               "DocumentMoniker": "C:\\Users\\lab_services_student\\OneDrive - ADvTECH Ltd\\Desktop\\CMCS poe part\\prog6212poepart3-\\Models\\User.cs",
               "RelativeDocumentMoniker": "Models\\User.cs",
@@ -86,12 +120,11 @@
               "RelativeToolTip": "Models\\User.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAA0AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-18T15:56:41.488Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-18T15:56:41.488Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 12,
               "Title": "Edit.cshtml",
               "DocumentMoniker": "C:\\Users\\lab_services_student\\OneDrive - ADvTECH Ltd\\Desktop\\CMCS poe part\\prog6212poepart3-\\Views\\Lecturer\\Edit.cshtml",
               "RelativeDocumentMoniker": "Views\\Lecturer\\Edit.cshtml",
@@ -99,12 +132,11 @@
               "RelativeToolTip": "Views\\Lecturer\\Edit.cshtml",
               "ViewState": "AgIAAJUBAAAAAAAAAAAiwLkBAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-18T15:41:05.954Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-18T15:41:05.954Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 13,
               "Title": "Details.cshtml",
               "DocumentMoniker": "C:\\Users\\lab_services_student\\OneDrive - ADvTECH Ltd\\Desktop\\CMCS poe part\\prog6212poepart3-\\Views\\Lecturer\\Details.cshtml",
               "RelativeDocumentMoniker": "Views\\Lecturer\\Details.cshtml",
@@ -112,38 +144,37 @@
               "RelativeToolTip": "Views\\Lecturer\\Details.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAMICAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-18T15:31:37.244Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-18T15:31:37.244Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 8,
               "Title": "Create.cshtml",
               "DocumentMoniker": "C:\\Users\\lab_services_student\\OneDrive - ADvTECH Ltd\\Desktop\\CMCS poe part\\prog6212poepart3-\\Views\\Lecturer\\Create.cshtml",
               "RelativeDocumentMoniker": "Views\\Lecturer\\Create.cshtml",
               "ToolTip": "C:\\Users\\lab_services_student\\OneDrive - ADvTECH Ltd\\Desktop\\CMCS poe part\\prog6212poepart3-\\Views\\Lecturer\\Create.cshtml",
               "RelativeToolTip": "Views\\Lecturer\\Create.cshtml",
-              "ViewState": "AgIAAOIAAAAAAAAAAAAiwBgBAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAN0AAAAAAAAAAAAUwBgBAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-11-18T14:39:52.469Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 7,
               "Title": "Dashboard.cshtml",
               "DocumentMoniker": "C:\\Users\\lab_services_student\\OneDrive - ADvTECH Ltd\\Desktop\\CMCS poe part\\prog6212poepart3-\\Views\\Lecturer\\Dashboard.cshtml",
               "RelativeDocumentMoniker": "Views\\Lecturer\\Dashboard.cshtml",
               "ToolTip": "C:\\Users\\lab_services_student\\OneDrive - ADvTECH Ltd\\Desktop\\CMCS poe part\\prog6212poepart3-\\Views\\Lecturer\\Dashboard.cshtml",
               "RelativeToolTip": "Views\\Lecturer\\Dashboard.cshtml",
-              "ViewState": "AgIAAOMBAAAAAAAAAAAiwP0BAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAANsBAAAAAAAAAAAAwAYCAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-11-18T14:31:48.737Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 14,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\lab_services_student\\OneDrive - ADvTECH Ltd\\Desktop\\CMCS poe part\\prog6212poepart3-\\appsettings.json",
               "RelativeDocumentMoniker": "appsettings.json",
@@ -151,12 +182,11 @@
               "RelativeToolTip": "appsettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-11-18T13:41:38.294Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-18T13:41:38.294Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 15,
               "Title": "EditUser.cshtml",
               "DocumentMoniker": "C:\\Users\\lab_services_student\\OneDrive - ADvTECH Ltd\\Desktop\\CMCS poe part\\prog6212poepart3-\\Views\\HR\\EditUser.cshtml",
               "RelativeDocumentMoniker": "Views\\HR\\EditUser.cshtml",
@@ -168,52 +198,52 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 9,
               "Title": "CreateUser.cshtml",
               "DocumentMoniker": "C:\\Users\\lab_services_student\\OneDrive - ADvTECH Ltd\\Desktop\\CMCS poe part\\prog6212poepart3-\\Views\\HR\\CreateUser.cshtml",
               "RelativeDocumentMoniker": "Views\\HR\\CreateUser.cshtml",
               "ToolTip": "C:\\Users\\lab_services_student\\OneDrive - ADvTECH Ltd\\Desktop\\CMCS poe part\\prog6212poepart3-\\Views\\HR\\CreateUser.cshtml",
               "RelativeToolTip": "Views\\HR\\CreateUser.cshtml",
-              "ViewState": "AgIAAKMAAAAAAAAAAAAiwLwAAAAYAAAAAAAAAA==",
+              "ViewState": "AgIAAIwAAAAAAAAAAAAAwMcAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-11-17T15:53:55.879Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 5,
               "Title": "LecturerController.cs",
               "DocumentMoniker": "C:\\Users\\lab_services_student\\OneDrive - ADvTECH Ltd\\Desktop\\CMCS poe part\\prog6212poepart3-\\Controllers\\LecturerController.cs",
               "RelativeDocumentMoniker": "Controllers\\LecturerController.cs",
               "ToolTip": "C:\\Users\\lab_services_student\\OneDrive - ADvTECH Ltd\\Desktop\\CMCS poe part\\prog6212poepart3-\\Controllers\\LecturerController.cs",
               "RelativeToolTip": "Controllers\\LecturerController.cs",
-              "ViewState": "AgIAAFgBAAAAAAAAAAAcwHABAAAvAAAAAAAAAA==",
+              "ViewState": "AgIAAEQBAAAAAAAAAAAkwGwBAAA+AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-17T15:42:18.488Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 4,
               "Title": "ProgrammeCordinatorController.cs",
               "DocumentMoniker": "C:\\Users\\lab_services_student\\OneDrive - ADvTECH Ltd\\Desktop\\CMCS poe part\\prog6212poepart3-\\Controllers\\ProgrammeCordinatorController.cs",
               "RelativeDocumentMoniker": "Controllers\\ProgrammeCordinatorController.cs",
               "ToolTip": "C:\\Users\\lab_services_student\\OneDrive - ADvTECH Ltd\\Desktop\\CMCS poe part\\prog6212poepart3-\\Controllers\\ProgrammeCordinatorController.cs",
               "RelativeToolTip": "Controllers\\ProgrammeCordinatorController.cs",
-              "ViewState": "AgIAAOkAAAAAAAAAAAAcwBUBAAABAAAAAAAAAA==",
+              "ViewState": "AgIAANsAAAAAAAAAAAAswPQAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-17T15:40:11.171Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 6,
               "Title": "AcademicManagersController.cs",
               "DocumentMoniker": "C:\\Users\\lab_services_student\\OneDrive - ADvTECH Ltd\\Desktop\\CMCS poe part\\prog6212poepart3-\\Controllers\\AcademicManagersController.cs",
               "RelativeDocumentMoniker": "Controllers\\AcademicManagersController.cs",
               "ToolTip": "C:\\Users\\lab_services_student\\OneDrive - ADvTECH Ltd\\Desktop\\CMCS poe part\\prog6212poepart3-\\Controllers\\AcademicManagersController.cs",
               "RelativeToolTip": "Controllers\\AcademicManagersController.cs",
-              "ViewState": "AgIAAAwBAAAAAAAAAAAIwDcBAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAP4AAAAAAAAAAAAkwCYBAABOAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-17T15:34:49.482Z",
               "EditorCaption": ""
@@ -226,14 +256,14 @@
               "RelativeDocumentMoniker": "Controllers\\HRController.cs",
               "ToolTip": "C:\\Users\\lab_services_student\\OneDrive - ADvTECH Ltd\\Desktop\\CMCS poe part\\prog6212poepart3-\\Controllers\\HRController.cs",
               "RelativeToolTip": "Controllers\\HRController.cs",
-              "ViewState": "AgIAAPwBAAAAAAAAAAAmwB0CAAABAAAAAAAAAA==",
+              "ViewState": "AgIAADUCAAAAAAAAAAAswHgCAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-17T15:33:18.903Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 16,
               "Title": "SupportingDocument.cs",
               "DocumentMoniker": "C:\\Users\\lab_services_student\\OneDrive - ADvTECH Ltd\\Desktop\\CMCS poe part\\prog6212poepart3-\\Models\\SupportingDocument.cs",
               "RelativeDocumentMoniker": "Models\\SupportingDocument.cs",
@@ -245,7 +275,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 17,
               "Title": "Claims.cs",
               "DocumentMoniker": "C:\\Users\\lab_services_student\\OneDrive - ADvTECH Ltd\\Desktop\\CMCS poe part\\prog6212poepart3-\\Models\\Claims.cs",
               "RelativeDocumentMoniker": "Models\\Claims.cs",
@@ -257,7 +287,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 10,
               "Title": "IClaimsService.cs",
               "DocumentMoniker": "C:\\Users\\lab_services_student\\OneDrive - ADvTECH Ltd\\Desktop\\CMCS poe part\\prog6212poepart3-\\Services\\IClaimsService.cs",
               "RelativeDocumentMoniker": "Services\\IClaimsService.cs",
@@ -265,20 +295,20 @@
               "RelativeToolTip": "Services\\IClaimsService.cs",
               "ViewState": "AgIAAAwAAAAAAAAAAADwvxgAAAAwAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-17T15:22:39.306Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-17T15:22:39.306Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 0,
               "Title": "ClaimsService.cs",
               "DocumentMoniker": "C:\\Users\\lab_services_student\\OneDrive - ADvTECH Ltd\\Desktop\\CMCS poe part\\prog6212poepart3-\\Services\\ClaimsService.cs",
               "RelativeDocumentMoniker": "Services\\ClaimsService.cs",
               "ToolTip": "C:\\Users\\lab_services_student\\OneDrive - ADvTECH Ltd\\Desktop\\CMCS poe part\\prog6212poepart3-\\Services\\ClaimsService.cs",
               "RelativeToolTip": "Services\\ClaimsService.cs",
-              "ViewState": "AgIAABIEAAAAAAAAAAAiwDMEAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAIUCAAAAAAAAAAAowDsAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-17T15:22:08.317Z"
+              "WhenOpened": "2025-11-17T15:22:08.317Z",
+              "EditorCaption": ""
             }
           ]
         }
