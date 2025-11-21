@@ -577,16 +577,6 @@ C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\
 C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\obj\Debug\net9.0\The CMCS.pdb
 C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\obj\Debug\net9.0\The CMCS.genruntimeconfig.cache
 C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\The CMCS\progPart2\The CMCS\obj\Debug\net9.0\ref\The CMCS.dll
-C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\CMCS poe part\prog6212poepart3-\obj\Debug\net9.0\The CMCS.csproj.AssemblyReference.cache
-C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\CMCS poe part\prog6212poepart3-\obj\Debug\net9.0\rpswa.dswa.cache.json
-C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\CMCS poe part\prog6212poepart3-\obj\Debug\net9.0\The CMCS.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\CMCS poe part\prog6212poepart3-\obj\Debug\net9.0\The CMCS.AssemblyInfoInputs.cache
-C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\CMCS poe part\prog6212poepart3-\obj\Debug\net9.0\The CMCS.AssemblyInfo.cs
-C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\CMCS poe part\prog6212poepart3-\obj\Debug\net9.0\The CMCS.csproj.CoreCompileInputs.cache
-C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\CMCS poe part\prog6212poepart3-\obj\Debug\net9.0\The CMCS.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\CMCS poe part\prog6212poepart3-\obj\Debug\net9.0\The CMCS.RazorAssemblyInfo.cache
-C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\CMCS poe part\prog6212poepart3-\obj\Debug\net9.0\The CMCS.RazorAssemblyInfo.cs
-C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\CMCS poe part\prog6212poepart3-\obj\Debug\net9.0\The CMCS.sourcelink.json
 C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\CMCS poe part\prog6212poepart3-\bin\Debug\net9.0\appsettings.Development.json
 C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\CMCS poe part\prog6212poepart3-\bin\Debug\net9.0\appsettings.json
 C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\CMCS poe part\prog6212poepart3-\bin\Debug\net9.0\The CMCS.staticwebassets.runtime.json
@@ -791,6 +781,16 @@ C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\CMCS poe part\prog6
 C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\CMCS poe part\prog6212poepart3-\bin\Debug\net9.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\CMCS poe part\prog6212poepart3-\bin\Debug\net9.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\CMCS poe part\prog6212poepart3-\bin\Debug\net9.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\CMCS poe part\prog6212poepart3-\obj\Debug\net9.0\The CMCS.csproj.AssemblyReference.cache
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\CMCS poe part\prog6212poepart3-\obj\Debug\net9.0\rpswa.dswa.cache.json
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\CMCS poe part\prog6212poepart3-\obj\Debug\net9.0\The CMCS.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\CMCS poe part\prog6212poepart3-\obj\Debug\net9.0\The CMCS.AssemblyInfoInputs.cache
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\CMCS poe part\prog6212poepart3-\obj\Debug\net9.0\The CMCS.AssemblyInfo.cs
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\CMCS poe part\prog6212poepart3-\obj\Debug\net9.0\The CMCS.csproj.CoreCompileInputs.cache
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\CMCS poe part\prog6212poepart3-\obj\Debug\net9.0\The CMCS.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\CMCS poe part\prog6212poepart3-\obj\Debug\net9.0\The CMCS.RazorAssemblyInfo.cache
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\CMCS poe part\prog6212poepart3-\obj\Debug\net9.0\The CMCS.RazorAssemblyInfo.cs
+C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\CMCS poe part\prog6212poepart3-\obj\Debug\net9.0\The CMCS.sourcelink.json
 C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\CMCS poe part\prog6212poepart3-\obj\Debug\net9.0\rjimswa.dswa.cache.json
 C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\CMCS poe part\prog6212poepart3-\obj\Debug\net9.0\rjsmrazor.dswa.cache.json
 C:\Users\lab_services_student\OneDrive - ADvTECH Ltd\Desktop\CMCS poe part\prog6212poepart3-\obj\Debug\net9.0\rjsmcshtml.dswa.cache.json

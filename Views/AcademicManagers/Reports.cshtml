@@ -1,0 +1,493 @@
+﻿@model dynamic
+@{
+    ViewData["Title"] = "Reports & Analytics";
+    var reportData = Model;
+}
+
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <nav aria-label="breadcrumb" class="mb-4">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-action="Dashboard" asp-controller="AcademicManagers" class="text-decoration-none">Dashboard</a></li>
+                    <li class="breadcrumb-item active text-primary fw-semibold">Reports & Analytics</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-lg border-0 rounded-3 overflow-hidden">
+                <div class="card-header bg-gradient-primary text-white py-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center">
+                            <div class="icon-shape bg-white bg-opacity-10 rounded-circle p-3 me-3">
+                                <i class="fas fa-chart-bar fa-lg text-white"></i>
+                            </div>
+                            <div>
+                                <h1 class="h3 mb-0 fw-bold">Reports & Analytics</h1>
+                                <p class="mb-0 opacity-75">Comprehensive overview of claims data and performance metrics</p>
+                            </div>
+                        </div>
+                        <div class="dropdown">
+                            <button class="btn btn-light btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-download me-2"></i>Export
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-file-pdf me-2"></i>PDF Report</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-file-excel me-2"></i>Excel Export</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-file-csv me-2"></i>CSV Data</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Summary Statistics -->
+    <div class="row mb-4">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Claims</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@reportData.TotalClaims</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-file-invoice-dollar fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Approved Claims</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@reportData.ApprovedClaims</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-check-circle fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Pending Claims</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@reportData.PendingClaims</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clock fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-danger shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Rejected Claims</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@reportData.RejectedClaims</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-times-circle fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Department Breakdown -->
+        <div class="col-xl-6 col-lg-6 mb-4">
+            <div class="card shadow border-0 rounded-3 h-100">
+                <div class="card-header bg-white py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-building me-2"></i>Claims by Department
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-pie pt-4 pb-2">
+                        <canvas id="departmentChart"></canvas>
+                    </div>
+                    <div class="mt-4 text-center small">
+                        @if (reportData.ClaimsByDepartment != null)
+                        {
+                            foreach (var dept in reportData.ClaimsByDepartment)
+                            {
+                                <span class="me-3">
+                                    <i class="fas fa-circle" style="color: @GetDepartmentColor(dept.Department)"></i>
+                                    @dept.Department
+                                </span>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Monthly Performance -->
+        <div class="col-xl-6 col-lg-6 mb-4">
+            <div class="card shadow border-0 rounded-3 h-100">
+                <div class="card-header bg-white py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-chart-line me-2"></i>Monthly Approved Amount
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-bar">
+                        <canvas id="monthlyChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detailed Reports Section -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card shadow border-0 rounded-3">
+                <div class="card-header bg-white py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-table me-2"></i>Detailed Claims Report
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Claim ID</th>
+                                    <th>Lecturer</th>
+                                    <th>Department</th>
+                                    <th>Month</th>
+                                    <th>Hours</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Submitted Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- This would be populated with actual data from the controller -->
+                                <tr>
+                                    <td colspan="8" class="text-center text-muted py-4">
+                                        <i class="fas fa-info-circle fa-2x mb-3"></i>
+                                        <br>
+                                        Detailed claims data would be displayed here
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card shadow border-0 rounded-3">
+                <div class="card-header bg-white py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-rocket me-2"></i>Quick Actions
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-md-3 mb-3">
+                            <a href="#" class="btn btn-outline-primary btn-lg w-100 py-3">
+                                <i class="fas fa-file-export fa-2x mb-2"></i>
+                                <br>
+                                <span>Export Full Report</span>
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="#" class="btn btn-outline-success btn-lg w-100 py-3">
+                                <i class="fas fa-chart-pie fa-2x mb-2"></i>
+                                <br>
+                                <span>Generate Analytics</span>
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="#" class="btn btn-outline-info btn-lg w-100 py-3">
+                                <i class="fas fa-download fa-2x mb-2"></i>
+                                <br>
+                                <span>Download Data</span>
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="#" class="btn btn-outline-warning btn-lg w-100 py-3">
+                                <i class="fas fa-cog fa-2x mb-2"></i>
+                                <br>
+                                <span>Report Settings</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Department Pie Chart
+            var departmentCtx = document.getElementById('departmentChart').getContext('2d');
+            var departmentChart = new Chart(departmentCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Computer Science', 'Mathematics', 'Engineering', 'Business', 'Human Resources'],
+                    datasets: [{
+                        data: [35, 25, 20, 15, 5],
+                        backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b'],
+                        hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf', '#dda20a', '#be2617'],
+                        hoverBorderColor: "rgba(234, 236, 244, 1)",
+                    }],
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    cutout: '50%',
+                },
+            });
+
+            // Monthly Bar Chart
+            var monthlyCtx = document.getElementById('monthlyChart').getContext('2d');
+            var monthlyChart = new Chart(monthlyCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    datasets: [{
+                        label: "Approved Amount (R)",
+                        backgroundColor: "#4e73df",
+                        hoverBackgroundColor: "#2e59d9",
+                        borderColor: "#4e73df",
+                        data: [42150, 53120, 62510, 78410, 98210, 149840, 125610, 184520, 142350, 125480, 136420, 158740],
+                    }],
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        },
+                        y: {
+                            grid: {
+                                color: "rgb(234, 236, 244)",
+                                zeroLineColor: "rgb(234, 236, 244)",
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return 'R' + value.toLocaleString();
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return 'Amount: R' + context.parsed.y.toLocaleString();
+                                }
+                            }
+                        }
+                    }
+                },
+            });
+
+            // Initialize DataTable
+            $('#dataTable').DataTable({
+                pageLength: 10,
+                responsive: true,
+                order: [[7, 'desc']],
+                language: {
+                    search: "_INPUT_",
+                    searchPlaceholder: "Search reports...",
+                    lengthMenu: "_MENU_ records per page",
+                    zeroRecords: "No matching records found",
+                    info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                    infoEmpty: "No records available",
+                    infoFiltered: "(filtered from _MAX_ total entries)"
+                }
+            });
+        });
+    </script>
+
+    <style>
+        :root {
+            --primary-color: #4e73df;
+            --success-color: #1cc88a;
+            --info-color: #36b9cc;
+            --warning-color: #f6c23e;
+            --danger-color: #e74a3b;
+            --secondary-color: #858796;
+            --light-color: #f8f9fc;
+            --dark-color: #5a5c69;
+        }
+
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #224abe 100%) !important;
+        }
+
+        .border-left-primary {
+            border-left: 0.25rem solid var(--primary-color) !important;
+        }
+
+        .border-left-success {
+            border-left: 0.25rem solid var(--success-color) !important;
+        }
+
+        .border-left-warning {
+            border-left: 0.25rem solid var(--warning-color) !important;
+        }
+
+        .border-left-danger {
+            border-left: 0.25rem solid var(--danger-color) !important;
+        }
+
+        .card {
+            border: none;
+            border-radius: 0.75rem;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 0.5rem 2rem 0 rgba(58, 59, 69, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .breadcrumb {
+            background: var(--light-color);
+            border-radius: 0.5rem;
+            padding: 1rem 1.5rem;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+
+        .icon-shape {
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .chart-pie, .chart-bar {
+            position: relative;
+            height: 20rem;
+        }
+
+        .btn {
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0.5rem 1rem rgba(78, 115, 223, 0.3);
+        }
+
+        .table th {
+            border-top: none;
+            font-weight: 700;
+            color: var(--dark-color);
+            background-color: var(--light-color);
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: rgba(78, 115, 223, 0.05);
+        }
+
+        .text-xs {
+            font-size: 0.7rem;
+        }
+
+        .font-weight-bold {
+            font-weight: 700 !important;
+        }
+
+        .text-uppercase {
+            text-transform: uppercase;
+        }
+
+        .text-gray-800 {
+            color: var(--dark-color) !important;
+        }
+
+        .text-gray-300 {
+            color: #dddfeb !important;
+        }
+
+        .shadow {
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15) !important;
+        }
+
+        /* Responsive adjustments */
+        @@media (max-width: 768px) {
+            .chart-pie, .chart-bar {
+                height: 15rem;
+            }
+
+            .btn-lg {
+                padding: 0.75rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .h5 {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* DataTable customization */
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            border-radius: 0.375rem !important;
+            margin: 0 2px;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            background: var(--primary-color) !important;
+            border-color: var(--primary-color) !important;
+        }
+    </style>
+}
+
+@functions {
+    private string GetDepartmentColor(string department)
+    {
+        return department?.ToLower() switch
+        {
+            "computer science" => "#4e73df",
+            "mathematics" => "#1cc88a",
+            "engineering" => "#36b9cc",
+            "business" => "#f6c23e",
+            "human resources" => "#e74a3b",
+            _ => "#858796"
+        };
+    }
+}
