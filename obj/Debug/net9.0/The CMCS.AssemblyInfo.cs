@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("The CMCS")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c80ad9ff8db0ab5f984c7408c44c9b1d94cac1ab")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a7689db2bede154f93791ba5dda88bd9748303eb")]
 [assembly: System.Reflection.AssemblyProductAttribute("The CMCS")]
 [assembly: System.Reflection.AssemblyTitleAttribute("The CMCS")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
