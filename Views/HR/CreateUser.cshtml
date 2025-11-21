@@ -3,154 +3,228 @@
     ViewData["Title"] = "Create New User";
 }
 
-<div class="container-fluid">
+<div class="container-fluid py-4">
     <div class="row">
         <div class="col-12">
-            <nav aria-label="breadcrumb">
+            <nav aria-label="breadcrumb" class="mb-4">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a asp-action="Dashboard" asp-controller="HR">HR Dashboard</a></li>
-                    <li class="breadcrumb-item"><a asp-action="ManageUsers" asp-controller="HR">Manage Users</a></li>
-                    <li class="breadcrumb-item active">Create User</li>
+                    <li class="breadcrumb-item"><a asp-action="Dashboard" asp-controller="HR" class="text-decoration-none">HR Dashboard</a></li>
+                    <li class="breadcrumb-item"><a asp-action="ManageUsers" asp-controller="HR" class="text-decoration-none">Manage Users</a></li>
+                    <li class="breadcrumb-item active text-primary fw-semibold">Create User</li>
                 </ol>
             </nav>
         </div>
     </div>
 
     <div class="row justify-content-center">
-        <div class="col-md-8 col-lg-6">
-            <div class="card">
-                <div class="card-header bg-primary text-white">
-                    <h3 class="card-title mb-0">
-                        <i class="fas fa-user-plus me-2"></i>Create New User
-                    </h3>
+        <div class="col-xxl-8 col-xl-10">
+            <div class="card shadow-lg border-0 rounded-3 overflow-hidden">
+                <div class="card-header bg-gradient-primary text-white py-4">
+                    <div class="d-flex align-items-center">
+                        <div class="icon-shape bg-white bg-opacity-10 rounded-circle p-3 me-3">
+                            <i class="fas fa-user-plus fa-lg text-white"></i>
+                        </div>
+                        <div>
+                            <h1 class="h3 mb-0 fw-bold">Create New User</h1>
+                            <p class="mb-0 opacity-75">Add a new user to the Academic Claims System</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body">
+
+                <div class="card-body p-5">
                     @if (TempData["ErrorMessage"] != null)
                     {
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <i class="fas fa-exclamation-triangle me-2"></i>@TempData["ErrorMessage"]
+                        <div class="alert alert-danger alert-dismissible fade show rounded-3 shadow-sm" role="alert">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-exclamation-triangle fa-lg me-3"></i>
+                                <div class="flex-grow-1">
+                                    <h6 class="alert-heading mb-1">Error</h6>
+                                    <p class="mb-0">@TempData["ErrorMessage"]</p>
+                                </div>
+                            </div>
                             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                         </div>
                     }
 
                     @if (TempData["SuccessMessage"] != null)
                     {
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            <i class="fas fa-check-circle me-2"></i>@TempData["SuccessMessage"]
+                        <div class="alert alert-success alert-dismissible fade show rounded-3 shadow-sm" role="alert">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-check-circle fa-lg me-3"></i>
+                                <div class="flex-grow-1">
+                                    <h6 class="alert-heading mb-1">Success</h6>
+                                    <p class="mb-0">@TempData["SuccessMessage"]</p>
+                                </div>
+                            </div>
                             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                         </div>
                     }
 
-                    <form asp-action="CreateUser" method="post" id="createUserForm">
+                    <form asp-action="CreateUser" method="post" id="createUserForm" class="needs-validation" novalidate>
                         @Html.AntiForgeryToken()
 
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group mb-3">
-                                    <label asp-for="Name" class="form-label">Full Name *</label>
-                                    <input asp-for="Name" class="form-control" placeholder="Enter full name" required />
-                                    <span asp-validation-for="Name" class="text-danger small"></span>
-                                </div>
+                        <!-- Personal Information Section -->
+                        <div class="section-card mb-4">
+                            <div class="section-header">
+                                <i class="fas fa-user-circle me-2"></i>
+                                <h5 class="mb-0">Personal Information</h5>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group mb-3">
-                                    <label asp-for="Username" class="form-label">Username</label>
-                                    <input asp-for="Username" class="form-control" placeholder="Leave blank to auto-generate" />
-                                    <small class="form-text text-muted">If left blank, username will be auto-generated</small>
-                                    <span asp-validation-for="Username" class="text-danger small"></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group mb-3">
-                                    <label asp-for="Role" class="form-label">Role *</label>
-                                    <select asp-for="Role" class="form-select" required>
-                                        <option value="">Select Role</option>
-                                        <option value="Lecturer">Lecturer</option>
-                                        <option value="Coordinator">Programme Coordinator</option>
-                                        <option value="Manager">Academic Manager</option>
-                                        <option value="HR">HR</option>
-                                    </select>
-                                    <span asp-validation-for="Role" class="text-danger small"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group mb-3">
-                                    <label asp-for="Department" class="form-label">Department *</label>
-                                    <select asp-for="Department" class="form-select" required>
-                                        <option value="">Select Department</option>
-                                        <option value="Computer Science">Computer Science</option>
-                                        <option value="Mathematics">Mathematics</option>
-                                        <option value="Engineering">Engineering</option>
-                                        <option value="Business">Business</option>
-                                        <option value="Human Resources">Human Resources</option>
-                                        <option value="All">All Departments</option>
-                                    </select>
-                                    <span asp-validation-for="Department" class="text-danger small"></span>
+                            <div class="section-body">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            <input asp-for="Name" class="form-control" placeholder="Enter full name" required />
+                                            <label asp-for="Name" class="form-label">Full Name *</label>
+                                            <span asp-validation-for="Name" class="text-danger small validation-message"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            <input asp-for="Username" class="form-control" placeholder="Leave blank to auto-generate" />
+                                            <label asp-for="Username" class="form-label">Username</label>
+                                            <div class="form-text">If left blank, username will be auto-generated</div>
+                                            <span asp-validation-for="Username" class="text-danger small validation-message"></span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group mb-3">
-                                    <label asp-for="Email" class="form-label">Email Address *</label>
-                                    <input asp-for="Email" type="email" class="form-control" placeholder="Enter email address" required />
-                                    <span asp-validation-for="Email" class="text-danger small"></span>
-                                </div>
+                        <!-- Role & Department Section -->
+                        <div class="section-card mb-4">
+                            <div class="section-header">
+                                <i class="fas fa-briefcase me-2"></i>
+                                <h5 class="mb-0">Role & Department</h5>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group mb-3">
-                                    <label asp-for="PhoneNumber" class="form-label">Phone Number</label>
-                                    <input asp-for="PhoneNumber" class="form-control" placeholder="Enter phone number" />
-                                    <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
+                            <div class="section-body">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            <select asp-for="Role" class="form-select" required>
+                                                <option value="">Select Role</option>
+                                                <option value="Lecturer">Lecturer</option>
+                                                <option value="Coordinator">Programme Coordinator</option>
+                                                <option value="Manager">Academic Manager</option>
+                                                <option value="HR">HR</option>
+                                            </select>
+                                            <label asp-for="Role" class="form-label">Role *</label>
+                                            <span asp-validation-for="Role" class="text-danger small validation-message"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            <select asp-for="Department" class="form-select" required>
+                                                <option value="">Select Department</option>
+                                                <option value="Computer Science">Computer Science</option>
+                                                <option value="Mathematics">Mathematics</option>
+                                                <option value="Engineering">Engineering</option>
+                                                <option value="Business">Business</option>
+                                                <option value="Human Resources">Human Resources</option>
+                                                <option value="All">All Departments</option>
+                                            </select>
+                                            <label asp-for="Department" class="form-label">Department *</label>
+                                            <span asp-validation-for="Department" class="text-danger small validation-message"></span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group mb-3" id="hourlyRateGroup">
-                                    <label asp-for="HourlyRate" class="form-label">Hourly Rate (R)</label>
-                                    <input asp-for="HourlyRate" type="number" step="0.01" min="0" class="form-control" placeholder="0.00" />
-                                    <small class="form-text text-muted">Only applicable for Lecturers</small>
-                                    <span asp-validation-for="HourlyRate" class="text-danger small"></span>
+                        <!-- Contact Information Section -->
+                        <div class="section-card mb-4">
+                            <div class="section-header">
+                                <i class="fas fa-address-card me-2"></i>
+                                <h5 class="mb-0">Contact Information</h5>
+                            </div>
+                            <div class="section-body">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            <input asp-for="Email" type="email" class="form-control" placeholder="Enter email address" required />
+                                            <label asp-for="Email" class="form-label">Email Address *</label>
+                                            <span asp-validation-for="Email" class="text-danger small validation-message"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            <input asp-for="PhoneNumber" class="form-control" placeholder="Enter phone number" />
+                                            <label asp-for="PhoneNumber" class="form-label">Phone Number</label>
+                                            <span asp-validation-for="PhoneNumber" class="text-danger small validation-message"></span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group mb-3">
-                                    <label class="form-label">Default Password</label>
-                                    <input type="text" class="form-control" value="Welcome123" readonly />
-                                    <small class="form-text text-muted">This password will be set automatically</small>
+                        </div>
+
+                        <!-- Financial & Security Section -->
+                        <div class="section-card mb-4">
+                            <div class="section-header">
+                                <i class="fas fa-cog me-2"></i>
+                                <h5 class="mb-0">Settings & Security</h5>
+                            </div>
+                            <div class="section-body">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <div class="form-floating" id="hourlyRateGroup">
+                                            <input asp-for="HourlyRate" type="number" step="0.01" min="0" class="form-control" placeholder="0.00" />
+                                            <label asp-for="HourlyRate" class="form-label">Hourly Rate (R)</label>
+                                            <div class="form-text">Only applicable for Lecturers</div>
+                                            <span asp-validation-for="HourlyRate" class="text-danger small validation-message"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control bg-light" value="Welcome123" readonly />
+                                            <label class="form-label">Default Password</label>
+                                            <div class="form-text">This password will be set automatically</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="form-group form-check mb-3">
-                            <input asp-for="IsActive" class="form-check-input" checked />
-                            <label asp-for="IsActive" class="form-check-label">Active User</label>
+                        <!-- Status Section -->
+                        <div class="section-card mb-4">
+                            <div class="section-body">
+                                <div class="form-check form-switch form-check-lg">
+                                    <input asp-for="IsActive" class="form-check-input" checked role="switch" />
+                                    <label asp-for="IsActive" class="form-check-label fw-semibold">Active User Account</label>
+                                </div>
+                                <div class="form-text mt-1">Inactive users cannot log into the system</div>
+                            </div>
                         </div>
 
-                        <div class="alert alert-info">
-                            <h6 class="alert-heading">
-                                <i class="fas fa-info-circle me-2"></i>Important Information
-                            </h6>
-                            <ul class="mb-0">
-                                <li>Username will be auto-generated if left blank</li>
-                                <li>Default password is "Welcome123"</li>
-                                <li>Hourly rate is only required for Lecturers</li>
-                                <li>User will be able to change their password after first login</li>
-                            </ul>
+                        <!-- Information Alert -->
+                        <div class="alert alert-info border-0 rounded-3 shadow-sm mb-4">
+                            <div class="d-flex">
+                                <i class="fas fa-info-circle fa-lg text-info me-3 mt-1"></i>
+                                <div class="flex-grow-1">
+                                    <h6 class="alert-heading mb-2">Important Information</h6>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <ul class="list-unstyled mb-0">
+                                                <li class="mb-1"><i class="fas fa-check-circle text-success me-2"></i>Username auto-generation available</li>
+                                                <li class="mb-1"><i class="fas fa-check-circle text-success me-2"></i>Default password: "Welcome123"</li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <ul class="list-unstyled mb-0">
+                                                <li class="mb-1"><i class="fas fa-check-circle text-success me-2"></i>Hourly rate for Lecturers only</li>
+                                                <li class="mb-1"><i class="fas fa-check-circle text-success me-2"></i>Password change on first login</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <a asp-action="ManageUsers" asp-controller="HR" class="btn btn-secondary me-md-2">
-                                <i class="fas fa-arrow-left me-1"></i>Cancel
+                        <!-- Action Buttons -->
+                        <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+                            <a asp-action="ManageUsers" asp-controller="HR" class="btn btn-outline-secondary btn-lg px-4 rounded-pill">
+                                <i class="fas fa-arrow-left me-2"></i>Back to Users
                             </a>
-                            <button type="submit" class="btn btn-primary" id="submitBtn">
-                                <i class="fas fa-save me-1"></i>Create User
+                            <button type="submit" class="btn btn-primary btn-lg px-5 rounded-pill shadow" id="submitBtn">
+                                <i class="fas fa-user-plus me-2"></i>Create User
                             </button>
                         </div>
                     </form>
@@ -173,6 +247,12 @@
                         var lastName = names.length > 1 ? names[names.length - 1].toLowerCase() : '';
                         var username = firstName + (lastName ? '.' + lastName : '');
                         $('#Username').val(username);
+
+                        // Add animation effect
+                        $('#Username').addClass('highlight-field');
+                        setTimeout(() => {
+                            $('#Username').removeClass('highlight-field');
+                        }, 2000);
                     }
                 }
             });
@@ -184,17 +264,297 @@
                 var hourlyRateInput = $('#HourlyRate');
 
                 if (role === 'Lecturer') {
-                    hourlyRateGroup.show();
+                    hourlyRateGroup.slideDown(300);
                     hourlyRateInput.prop('required', true);
+                    hourlyRateInput.closest('.form-floating').addClass('required-field');
                 } else {
-                    hourlyRateGroup.hide();
+                    hourlyRateGroup.slideUp(300);
                     hourlyRateInput.prop('required', false);
                     hourlyRateInput.val('0');
+                    hourlyRateInput.closest('.form-floating').removeClass('required-field');
                 }
             });
 
             // Trigger change event on page load
             $('#Role').trigger('change');
+
+            // Form validation with enhanced feedback
+            $('form').on('submit', function(e) {
+                var role = $('#Role').val();
+                var department = $('#Department').val();
+
+                if (!role) {
+                    e.preventDefault();
+                    showValidationError('Please select a role for the user.');
+                    $('#Role').closest('.form-floating').addClass('is-invalid');
+                    return false;
+                }
+
+                if (!department) {
+                    e.preventDefault();
+                    showValidationError('Please select a department for the user.');
+                    $('#Department').closest('.form-floating').addClass('is-invalid');
+                    return false;
+                }
+
+                // Add loading state to submit button
+                $('#submitBtn').prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i>Creating User...');
+            });
+
+            // Remove validation styles on input
+            $('input, select').on('input change', function() {
+                $(this).closest('.form-floating').removeClass('is-invalid');
+            });
+
+            function showValidationError(message) {
+                // Create or update validation message
+                let $alert = $('.alert-danger');
+                if ($alert.length === 0) {
+                    $alert = $(`
+                        <div class="alert alert-danger alert-dismissible fade show rounded-3 shadow-sm" role="alert">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-exclamation-triangle fa-lg me-3"></i>
+                                <div class="flex-grow-1">
+                                    <h6 class="alert-heading mb-1">Validation Error</h6>
+                                    <p class="mb-0">${message}</p>
+                                </div>
+                            </div>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    `).prependTo('.card-body');
+                } else {
+                    $alert.find('p').text(message);
+                }
+            }
         });
     </script>
+
+    <style>
+        :root {
+            --primary-color: #2c5aa0;
+            --secondary-color: #6c757d;
+            --success-color: #198754;
+            --info-color: #0dcaf0;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --gradient-primary: linear-gradient(135deg, #2c5aa0 0%, #3a7bd5 100%);
+            --gradient-secondary: linear-gradient(135deg, #6c757d 0%, #868e96 100%);
+            --border-radius: 0.75rem;
+            --box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s ease;
+        }
+
+        .bg-gradient-primary {
+            background: var(--gradient-primary) !important;
+        }
+
+        .card {
+            border: none;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
+        }
+
+        .card-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .icon-shape {
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .breadcrumb {
+            background: var(--light-color);
+            border-radius: var(--border-radius);
+            padding: 1rem 1.5rem;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+
+        .breadcrumb-item.active {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .section-card {
+            background: var(--light-color);
+            border-radius: var(--border-radius);
+            border: 1px solid #e9ecef;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .section-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 0.25rem 0.5rem rgba(44, 90, 160, 0.1);
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid #dee2e6;
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .section-body {
+            padding: 1.5rem;
+        }
+
+        .form-floating {
+            position: relative;
+        }
+
+        .form-control, .form-select {
+            border-radius: 0.5rem;
+            border: 2px solid #e9ecef;
+            padding: 1rem 0.75rem;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(44, 90, 160, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .form-control:not(:placeholder-shown) {
+            background-color: #fafbfc;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: var(--secondary-color);
+        }
+
+        .form-text {
+            font-size: 0.85rem;
+            color: var(--secondary-color);
+            margin-top: 0.25rem;
+        }
+
+        .validation-message {
+            display: block;
+            margin-top: 0.25rem;
+            font-size: 0.8rem;
+        }
+
+        .btn {
+            border-radius: 2rem;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: var(--transition);
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            box-shadow: 0 4px 15px rgba(44, 90, 160, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(44, 90, 160, 0.4);
+        }
+
+        .btn-outline-secondary {
+            border: 2px solid var(--secondary-color);
+            color: var(--secondary-color);
+        }
+
+        .btn-outline-secondary:hover {
+            background: var(--secondary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .alert {
+            border-radius: var(--border-radius);
+            border: none;
+            box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+        }
+
+        .form-check-input:checked {
+            background-color: var(--success-color);
+            border-color: var(--success-color);
+        }
+
+        .form-check-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(44, 90, 160, 0.25);
+        }
+
+        .form-switch .form-check-input {
+            width: 3rem;
+            height: 1.5rem;
+        }
+
+        /* Custom animations */
+        .highlight-field {
+            animation: highlight-pulse 2s ease-in-out;
+        }
+
+        @@keyframes highlight-pulse {
+            0% { background-color: transparent; }
+            50% { background-color: rgba(44, 90, 160, 0.1); }
+            100% { background-color: transparent; }
+        }
+
+        .required-field .form-label::after {
+            content: " *";
+            color: var(--danger-color);
+        }
+
+        .is-invalid .form-control, .is-invalid .form-select {
+            border-color: var(--danger-color);
+            box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+        }
+
+        /* Responsive design */
+        @@media (max-width: 768px) {
+            .card-body {
+                padding: 1.5rem !important;
+            }
+
+            .section-body {
+                padding: 1rem;
+            }
+
+            .btn {
+                padding: 0.625rem 1.5rem;
+            }
+
+            .d-flex.justify-content-between {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .d-flex.justify-content-between .btn {
+                width: 100%;
+            }
+        }
+
+        /* Loading state */
+        .btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        /* Smooth transitions for all interactive elements */
+        * {
+            transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+    </style>
 }
