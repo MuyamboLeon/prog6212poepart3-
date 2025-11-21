@@ -70,6 +70,7 @@ namespace The_CMCS.Models
         public decimal MaxHourlyRate { get; set; } = 1000;
         public bool IsActive { get; set; } = true;
         public DateTime CreatedDate { get; set; } = DateTime.Now;
+        public int MinHours { get; internal set; }
     }
 
     public class AutomatedReport

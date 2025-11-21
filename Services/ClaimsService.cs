@@ -1,6 +1,7 @@
 ﻿using The_CMCS.Models;
 using System.Globalization;
 using System.Text.Json;
+using Microsoft.AspNetCore.Http;
 
 namespace The_CMCS.Services
 {
@@ -25,25 +26,134 @@ namespace The_CMCS.Services
             _users.AddRange(new List<User>
             {
                 new User {
-                   
+                    Id = "USR-001",
+                    Username = "hr",
+                    Password = "password",
+                    Name = "Sarah Johnson",
+                    Email = "sarah.johnson@university.ac.za",
+                    Role = "HR",
+                    Department = "Human Resources",
+                    HourlyRate = 0,
+                    PhoneNumber = "+27 11 123 4567",
+                    IsActive = true,
+                    CreatedDate = DateTime.Now.AddMonths(-6)
                 },
                 new User {
-                   
+                    Id = "USR-002",
+                    Username = "Mr.Leon",
+                    Password = "password",
+                    Name = "Leon Muyambo",
+                    Email = "drleon@university.ac.za",
+                    Role = "Lecturer",
+                    Department = "Computer Science",
+                    HourlyRate = 320,
+                    PhoneNumber = "+27 11 234 5678",
+                    IsActive = true,
+                    CreatedDate = DateTime.Now.AddMonths(-5)
                 },
                 new User {
-                  
+                    Id = "USR-003",
+                    Username = "Mizo",
+                    Password = "password",
+                    Name = "Mizo Joy",
+                    Email = "mary.wilson@university.ac.za",
+                    Role = "Lecturer",
+                    Department = "Mathematics",
+                    HourlyRate = 310,
+                    PhoneNumber = "+27 11 345 6789",
+                    IsActive = true,
+                    CreatedDate = DateTime.Now.AddMonths(-4)
                 },
                 new User {
-                  
+                    Id = "USR-004",
+                    Username = "coordinator",
+                    Password = "password",
+                    Name = "David Brown",
+                    Email = "david.brown@university.ac.za",
+                    Role = "Coordinator",
+                    Department = "Computer Science",
+                    HourlyRate = 0,
+                    PhoneNumber = "+27 11 456 7890",
+                    IsActive = true,
+                    CreatedDate = DateTime.Now.AddMonths(-3)
                 },
                 new User {
-                
+                    Id = "USR-005",
+                    Username = "lisa",
+                    Password = "password",
+                    Name = "Lisa Davis",
+                    Email = "lisa.davis@university.ac.za",
+                    Role = "Coordinator",
+                    Department = "Mathematics",
+                    HourlyRate = 0,
+                    PhoneNumber = "+27 11 567 8901",
+                    IsActive = true,
+                    CreatedDate = DateTime.Now.AddMonths(-3)
                 },
                 new User {
-                 
+                    Id = "USR-006",
+                    Username = "manager",
+                    Password = "password",
+                    Name = "Robert Miller",
+                    Email = "robert.miller@university.ac.za",
+                    Role = "Manager",
+                    Department = "All",
+                    HourlyRate = 0,
+                    PhoneNumber = "+27 11 678 9012",
+                    IsActive = true,
+                    CreatedDate = DateTime.Now.AddMonths(-2)
                 },
                 new User {
-                
+                    Id = "USR-007",
+                    Username = "susan.taylor",
+                    Password = "password",
+                    Name = "Susan Taylor",
+                    Email = "susan.taylor@university.ac.za",
+                    Role = "Lecturer",
+                    Department = "Engineering",
+                    HourlyRate = 340,
+                    PhoneNumber = "+27 11 789 0123",
+                    IsActive = true,
+                    CreatedDate = DateTime.Now.AddMonths(-1)
+                },
+                new User {
+                    Id = "USR-008",
+                    Username = "michael.clark",
+                    Password = "password",
+                    Name = "Michael Clark",
+                    Email = "michael.clark@university.ac.za",
+                    Role = "Lecturer",
+                    Department = "Business",
+                    HourlyRate = 330,
+                    PhoneNumber = "+27 11 890 1234",
+                    IsActive = true,
+                    CreatedDate = DateTime.Now.AddMonths(-1)
+                },
+                new User {
+                    Id = "USR-009",
+                    Username = "jennifer.lee",
+                    Password = "password",
+                    Name = "Jennifer Lee",
+                    Email = "jennifer.lee@university.ac.za",
+                    Role = "Lecturer",
+                    Department = "Law",
+                    HourlyRate = 350,
+                    PhoneNumber = "+27 11 901 2345",
+                    IsActive = true,
+                    CreatedDate = DateTime.Now.AddMonths(-2)
+                },
+                new User {
+                    Id = "USR-010",
+                    Username = "thomas.anderson",
+                    Password = "password",
+                    Name = "Thomas Anderson",
+                    Email = "thomas.anderson@university.ac.za",
+                    Role = "Coordinator",
+                    Department = "Engineering",
+                    HourlyRate = 0,
+                    PhoneNumber = "+27 11 012 3456",
+                    IsActive = true,
+                    CreatedDate = DateTime.Now.AddMonths(-4)
                 }
             });
 
@@ -51,13 +161,97 @@ namespace The_CMCS.Services
             _claims.AddRange(new List<Claim>
             {
                 new Claim {
-                   
+                    Id = "CLM-202401-001",
+                    LecturerId = "USR-002",
+                    LecturerName = "John Smith",
+                    Month = "January 2024",
+                    Department = "Computer Science",
+                    HoursWorked = 45,
+                    HourlyRate = 320,
+                    TotalAmount = 14400,
+                    Description = "Teaching Advanced Programming and Data Structures courses",
+                    Status = "Approved",
+                    SubmittedDate = DateTime.Now.AddDays(-45),
+                    CoordinatorApproved = true,
+                    CoordinatorApprovedBy = "David Brown",
+                    CoordinatorApprovedDate = DateTime.Now.AddDays(-40),
+                    ManagerApproved = true,
+                    ManagerApprovedBy = "Robert Miller",
+                    ManagerApprovedDate = DateTime.Now.AddDays(-35),
+                    ReviewedBy = "Robert Miller",
+                    ReviewedDate = DateTime.Now.AddDays(-35)
                 },
                 new Claim {
-                   
+                    Id = "CLM-202401-002",
+                    LecturerId = "USR-003",
+                    LecturerName = "Mary Wilson",
+                    Month = "January 2024",
+                    Department = "Mathematics",
+                    HoursWorked = 38,
+                    HourlyRate = 310,
+                    TotalAmount = 11780,
+                    Description = "Calculus and Linear Algebra lectures and tutorials",
+                    Status = "Approved",
+                    SubmittedDate = DateTime.Now.AddDays(-42),
+                    CoordinatorApproved = true,
+                    CoordinatorApprovedBy = "Lisa Davis",
+                    CoordinatorApprovedDate = DateTime.Now.AddDays(-38),
+                    ManagerApproved = true,
+                    ManagerApprovedBy = "Robert Miller",
+                    ManagerApprovedDate = DateTime.Now.AddDays(-33),
+                    ReviewedBy = "Robert Miller",
+                    ReviewedDate = DateTime.Now.AddDays(-33)
                 },
                 new Claim {
-                 
+                    Id = "CLM-202402-001",
+                    LecturerId = "USR-007",
+                    LecturerName = "Susan Taylor",
+                    Month = "February 2024",
+                    Department = "Engineering",
+                    HoursWorked = 52,
+                    HourlyRate = 340,
+                    TotalAmount = 17680,
+                    Description = "Mechanical Engineering design and laboratory sessions",
+                    Status = "Pending",
+                    SubmittedDate = DateTime.Now.AddDays(-15),
+                    CoordinatorApproved = true,
+                    CoordinatorApprovedBy = "Thomas Anderson",
+                    CoordinatorApprovedDate = DateTime.Now.AddDays(-10),
+                    ManagerApproved = false
+                },
+                new Claim {
+                    Id = "CLM-202402-002",
+                    LecturerId = "USR-008",
+                    LecturerName = "Michael Clark",
+                    Month = "February 2024",
+                    Department = "Business",
+                    HoursWorked = 41,
+                    HourlyRate = 330,
+                    TotalAmount = 13530,
+                    Description = "Business Management and Entrepreneurship courses",
+                    Status = "Pending",
+                    SubmittedDate = DateTime.Now.AddDays(-12),
+                    CoordinatorApproved = false,
+                    ManagerApproved = false
+                },
+                new Claim {
+                    Id = "CLM-202402-003",
+                    LecturerId = "USR-009",
+                    LecturerName = "Jennifer Lee",
+                    Month = "February 2024",
+                    Department = "Law",
+                    HoursWorked = 36,
+                    HourlyRate = 350,
+                    TotalAmount = 12600,
+                    Description = "Contract Law and Legal Ethics lectures",
+                    Status = "Rejected",
+                    SubmittedDate = DateTime.Now.AddDays(-20),
+                    CoordinatorApproved = false,
+                    CoordinatorApprovedBy = "HR System",
+                    CoordinatorApprovedDate = DateTime.Now.AddDays(-18),
+                    ReviewedBy = "HR System",
+                    ReviewedDate = DateTime.Now.AddDays(-18),
+                    RejectionReason = "Hours claimed exceed department maximum for the month"
                 }
             });
         }
@@ -81,6 +275,16 @@ namespace The_CMCS.Services
                 Description = "Hourly rate must be between R0 and R1000",
                 MinHourlyRate = 0,
                 MaxHourlyRate = 1000,
+                IsActive = true,
+                CreatedDate = DateTime.Now
+            });
+
+            _validationRules.Add(new ClaimValidationRule
+            {
+                Id = "rule3",
+                RuleName = "Minimum Hours",
+                Description = "Minimum 1 hour per claim",
+                MinHours = 1,
                 IsActive = true,
                 CreatedDate = DateTime.Now
             });
@@ -111,6 +315,11 @@ namespace The_CMCS.Services
                 if (claim.HourlyRate < rule.MinHourlyRate || claim.HourlyRate > rule.MaxHourlyRate)
                 {
                     errors.Add($"Hourly rate (R{claim.HourlyRate}) must be between R{rule.MinHourlyRate} and R{rule.MaxHourlyRate}");
+                }
+
+                if (claim.HoursWorked < rule.MinHours)
+                {
+                    errors.Add($"Hours worked ({claim.HoursWorked}) must be at least {rule.MinHours} hour(s)");
                 }
             }
 
@@ -594,7 +803,7 @@ namespace The_CMCS.Services
                 // Generate ID if not provided
                 if (string.IsNullOrEmpty(user.Id))
                 {
-                    user.Id = Guid.NewGuid().ToString();
+                    user.Id = "USR-" + (_users.Count + 1).ToString().PadLeft(3, '0');
                 }
 
                 // Set created date
